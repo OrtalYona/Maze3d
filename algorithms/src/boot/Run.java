@@ -21,7 +21,7 @@ public class Run {
 		Presenter presenter = new Presenter(view, model);
 		model.addObserver(presenter);
 		view.addObserver(presenter);
-		//Test
+		
 		view.start();
 	}
 

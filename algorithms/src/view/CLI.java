@@ -97,7 +97,7 @@ public class CLI extends Observable {
 		
 		Thread thread = new Thread(new Runnable() {
 		
-			String line = null;
+			String line;// = null;
 			Command command = null;
 	
 		@Override
@@ -116,7 +116,8 @@ public class CLI extends Observable {
 					e.printStackTrace();
 					}
 			
-			/*String[] args = line.split(" ");
+				
+			String[] args = line.split(" ");
 			command = commands.get(args[0]);
 			
 			if (command != null){
@@ -129,7 +130,7 @@ public class CLI extends Observable {
 				out.write("Invalid parameters!\n");
 				
 				out.flush(); 
-			}*/
+			}
 			out.write("\n");
 					
 			} while (!line.equalsIgnoreCase("exit"));
