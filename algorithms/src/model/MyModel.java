@@ -1,0 +1,184 @@
+package model;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import algorithms.demo.Maze3dSearchableAdapter;
+import algorithms.mazeGenerators.GrowingTreeGenerator;
+import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.BFS;
+import algorithms.search.DFS;
+import algorithms.search.Solution;
+import io.MyCompressorOutputStream;
+import io.MyDecompressorInputStream;
+
+public class MyModel extends Observable implements Model {
+
+	private ExecutorService executor;
+
+	MyCompressorOutputStream myCompressor;
+	MyDecompressorInputStream myDecompressor;	
+	private Map<String, Maze3d> mazes = new ConcurrentHashMap<String, Maze3d>();
+	private Map<String , Solution> solutions = new HashMap<String , Solution>();
+
+	
+	public MyModel(){
+		executor=Executors.newFixedThreadPool(50);
+	}
+	
+	
+	@Override
+	public void generateMaze(String name,int floor, int rows, int cols) {
+		
+		executor.submit(new Callable<Maze3d>() {
+			
+			@Override
+			public Maze3d call() throws Exception {
+	
+			GrowingTreeGenerator generator = new GrowingTreeGenerator();
+			Maze3d maze = generator.generate(floor,rows, cols);
+			mazes.put(name, maze);
+				
+			setChanged();
+			notifyObservers("maze ready" + name);
+			return maze;	
+							
+			}	
+		});	
+	}
+
+	@Override
+	public Maze3d getMaze(String name) {
+		return mazes.get(name);
+	}
+
+	@Override
+	public void saveMaze(String name, String fileName) {
+		try{
+		
+			myCompressor = new MyCompressorOutputStream(new FileOutputStream(fileName));
+			myCompressor.write(mazes.get(name).toByteArray());
+			myCompressor.flush();
+			myCompressor.close();
+			
+		}
+			catch (FileNotFoundException e) {
+				System.out.println("Error not found exeption");
+
+			} catch (IOException e) {
+				System.out.println("Error IO exeption");
+
+			} 
+			finally {
+				try {
+					myCompressor.close();
+				} catch (IOException e) {
+					System.out.println("Error closing file");
+				}
+			}
+		}		
+	
+	@Override
+	public void loadMaze(String fileName, String name) {
+		
+		byte[] byteArr = new byte[3];
+		InputStream in=null;
+		
+		try {
+			in=new FileInputStream(fileName);	
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	
+	    try {
+	    	in.read(byteArr);
+			int size = (byteArr[0] * byteArr[1] * byteArr[2]) + 9;
+			byteArr = new byte [size];
+			in.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+		Maze3d myMaze = new Maze3d(byteArr);
+		mazes.put(name, myMaze);
+			
+	}
+	
+	@Override
+	public void exit() throws IOException  {
+
+		executor.shutdownNow();
+	}
+
+	@Override
+	public void solve(String name, String algorithms) {
+		
+		Maze3d maze = mazes.get(name);
+		Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
+		
+	
+		if(algorithms.toLowerCase().equals("bfs")){	
+			
+		    BFS<Position> bfs=new BFS<Position>();
+	        Solution<Position> solution1 = bfs.search(adapter);
+			solutions.put(name, solution1);
+		
+		}
+		
+		else if(algorithms.toLowerCase().equals("dfs")){	
+		    
+			DFS<Position> dfs= new DFS<Position>();
+			Solution<Position> solution2 = dfs.search(adapter);
+			solutions.put(name,solution2);
+		}
+	
+		notifyObservers("solution ready" + name);
+	}
+	
+	public int[][]  CrossSection(String name, String place, int section) {
+		
+		Maze3d maze3d=mazes.get(name);
+		
+		switch(place){
+		case "x":
+			 return maze3d.getCrossSectionByX(section);	
+		
+		case "y":
+			return maze3d.getCrossSectionByY(section);	
+		
+		case "z":
+			return	maze3d.getCrossSectionByZ(section);	
+		
+		default:
+			return null;
+		}
+		
+		
+	}
+	
+	public String display_Solution(String name){
+		
+		if (mazes.get(name) != null){
+		
+			return solutions.get(name).getStates().toString();
+		
+		}
+		else{
+			return "Error";
+		}
+    }
+
+}
