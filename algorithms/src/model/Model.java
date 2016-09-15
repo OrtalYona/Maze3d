@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import algorithms.mazeGenerators.Maze3d;
 
+
 public interface Model {
 	
 	/** generate
@@ -28,7 +29,7 @@ public interface Model {
 	/**solve
 	 * @param name
 	 * @param algorithms */
-	void solve(String name , String algorithms);
+    void solve(String name , String algorithms);
 
 	/** get maze
      * @param name

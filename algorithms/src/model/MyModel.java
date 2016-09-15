@@ -1,10 +1,13 @@
 package model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -12,6 +15,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.zip.GZIPInputStream; 
+import java.util.zip.GZIPOutputStream; 
+
 
 import algorithms.demo.Maze3dSearchableAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
@@ -30,7 +36,11 @@ public class MyModel extends Observable implements Model {
 	MyCompressorOutputStream myCompressor;
 	MyDecompressorInputStream myDecompressor;	
 	private Map<String, Maze3d> mazes = new ConcurrentHashMap<String, Maze3d>();
-	private Map<String , Solution> solutions = new HashMap<String , Solution>();
+	
+	//without Position
+	private Map<String , Solution<Position>> solutions = new HashMap<String , Solution<Position>>();
+	
+	private HashMap<Maze3d, Solution<Position>> mazeSolution=new HashMap<Maze3d, Solution<Position>>();
 
 	
 	public MyModel(){
@@ -40,6 +50,7 @@ public class MyModel extends Observable implements Model {
 	
 	@Override
 	public void generateMaze(String name,int floor, int rows, int cols) {
+		
 		
 		executor.submit(new Callable<Maze3d>() {
 			
@@ -129,23 +140,48 @@ public class MyModel extends Observable implements Model {
 		Maze3d maze = mazes.get(name);
 		Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
 		
-	
-		if(algorithms.toLowerCase().equals("bfs")){	
-			
-		    BFS<Position> bfs=new BFS<Position>();
-	        Solution<Position> solution1 = bfs.search(adapter);
-			solutions.put(name, solution1);
 		
+	if(!mazeSolution.containsValue(maze)){
+			
+		if(algorithms.toLowerCase().equals("bfs")){	
+				
+			executor.submit(new Callable<Solution<Position>>() {
+					
+			@Override
+			public Solution<Position> call() throws Exception {
+		
+		    BFS<Position> bfs=new BFS<Position>();
+	        //Solution<Position> solution1 = bfs.search(adapter);
+			Solution<Position> solution=bfs.search(adapter);
+	        solutions.put(name, solution);//solution1
+	        mazeSolution.put(maze, solution);
+	        return solution;
+			}	
+	         
+	        });
 		}
 		
 		else if(algorithms.toLowerCase().equals("dfs")){	
 		    
+			executor.submit(new Callable<Solution<Position>>() {
+				
+			@Override
+			public Solution<Position> call() throws Exception {
 			DFS<Position> dfs= new DFS<Position>();
-			Solution<Position> solution2 = dfs.search(adapter);
-			solutions.put(name,solution2);
-		}
+			//Solution<Position> solution2 = dfs.search(adapter);
+			Solution<Position> solution=dfs.search(adapter);
+			solutions.put(name,solution);//2
+			mazeSolution.put(maze, solution);
+			return solution;
+		}	
+         
+        });	
+     } 
+	}
 	
-		notifyObservers("solution ready" + name);
+	  setChanged();
+	  notifyObservers("solution ready" + name);
+	
 	}
 	
 	public int[][]  CrossSection(String name, String place, int section) {
@@ -181,4 +217,38 @@ public class MyModel extends Observable implements Model {
 		}
     }
 
+	
+	private void saveMap(){
+		
+		try{
+		File file = new File("d:/newfile.txt");
+		FileOutputStream fileOut=new FileOutputStream(file);
+		GZIPOutputStream zip=new GZIPOutputStream(fileOut);
+		ObjectOutputStream out=new ObjectOutputStream(zip);
+		out.writeObject(mazeSolution); 
+		out.flush(); 
+	    out.close();
+		}catch (IOException e) { 
+	     e.getStackTrace(); 
+		}
+
+	}
+	
+	private void loadMap(){
+		
+		try{
+		File file = new File("d:/newfile.txt");
+		FileInputStream fileOut=new FileInputStream(file); 
+		GZIPInputStream zip=new GZIPInputStream(fileOut); 
+		ObjectInputStream out=new ObjectInputStream(zip); 
+		mazeSolution = (HashMap<Maze3d, Solution<Position>>) out.readObject(); 
+		out.close(); 
+		}catch (IOException e) { 
+		e.getStackTrace(); 
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

@@ -42,10 +42,10 @@ public class CommandManager {
 		@Override
 		public void doCommand(String[] args) {
 			//if(args.length==5){
-			String name = args[1];
-			int floor=Integer.parseInt(args[2]);
-			int rows = Integer.parseInt(args[3]);
-			int cols = Integer.parseInt(args[4]);
+			String name = args[0];
+			int floor=Integer.parseInt(args[1]);
+			int rows = Integer.parseInt(args[2]);
+			int cols = Integer.parseInt(args[3]);
 			model.generateMaze(name, floor, rows, cols);
 		}//
 			//else{

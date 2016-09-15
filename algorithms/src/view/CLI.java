@@ -97,7 +97,7 @@ public class CLI extends Observable {
 		
 		Thread thread = new Thread(new Runnable() {
 		
-			String line;// = null;
+			String line= null;
 			Command command = null;
 	
 		@Override
@@ -136,8 +136,9 @@ public class CLI extends Observable {
 			} while (!line.equalsIgnoreCase("exit"));
 		}
 	});
-	
-	thread.start();	
+	thread.run();
+	thread.join();
+	//thread.start();	
   }
 	
 }
