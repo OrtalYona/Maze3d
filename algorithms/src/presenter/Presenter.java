@@ -1,11 +1,10 @@
 package presenter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import algorithms.mazeGenerators.Maze3d;
+
 import model.Model;
 import view.View;
 
@@ -23,6 +22,7 @@ public class Presenter implements Observer{
 		
 		commandsManager = new CommandManager(model, view);
 		commands = commandsManager.getCommandsMap();
+		myModel.loadMap();
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class Presenter implements Observer{
 		else {
 			String[] args = null;
 			if (arr.length > 1) {
-				String commandArgs = commandLine.substring(commandLine.indexOf(" ") + 1);
+				String commandArgs = commandLine.substring(commandLine.indexOf(" ") + 1);//+1
 				args = commandArgs.split(" ");							
 			}
 			Command cmd = commands.get(command);
@@ -47,7 +47,7 @@ public class Presenter implements Observer{
 
 	}
 
-	public HashMap<String,Command> getCommands() {
+/*	public HashMap<String,Command> getCommands() {
 	
 	commands.put("dir", new Dir());
 	commands.put("generate_3d_maze", new GenerateMazeCommand());
@@ -65,7 +65,7 @@ public class Presenter implements Observer{
 	
 /**
  * Generate Maze
- */
+ /
 public class GenerateMazeCommand implements Command {
 
 	@Override
@@ -85,7 +85,7 @@ public class GenerateMazeCommand implements Command {
 
 /**
  * Display Maze
- */
+ /
 public class DisplayMazeCommand implements Command {
 
 	@Override
@@ -103,7 +103,7 @@ public class DisplayMazeCommand implements Command {
 
 /**
  * Dir
- */
+ /
 public class Dir implements Command{
 	
 	@Override
@@ -122,7 +122,7 @@ public class Dir implements Command{
 
 /**
  * Exit
- */
+ /
 public class Exit implements Command{
 
 	@Override
@@ -138,7 +138,7 @@ public class Exit implements Command{
 
 /**
  * Load
- */
+ /
 public class Load implements Command{
 	
 	@Override
@@ -154,7 +154,7 @@ public class Load implements Command{
 }
 /**
  Save
-  */
+  /
 public class Save implements Command{
 
 	@Override
@@ -170,7 +170,7 @@ public class Save implements Command{
 
 /**
  * Solve
- */
+ /
 public class Solve implements Command{
 
 	@Override
@@ -199,7 +199,7 @@ public class Solve implements Command{
 	
 /**
  * Display Cross
- */
+ /
 public class DisplayCross implements Command {
 	
 	@Override
@@ -218,7 +218,7 @@ public class DisplayCross implements Command {
 
 /**
  * Display Solution
- */
+ /
 public class DisplaySolution implements Command {
 	
 	@Override
@@ -234,5 +234,5 @@ public class DisplaySolution implements Command {
  }
 	
 	
-	
+*/	
 }

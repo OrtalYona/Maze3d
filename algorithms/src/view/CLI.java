@@ -76,11 +76,11 @@ public class CLI extends Observable {
 		this.commands = commands;
 	}
 	
-	public void printCommands(){
+/*	public void printCommands(){
 		out.print("Choose command:");
 		out.flush();
 		
-		/*out.write("Show files in directory                      dir <name>\n");
+		out.write("Show files in directory                      dir <name>\n");
 		out.write("Generate maze                                generate_3d_maze <name> <x> <y> <z>\n");
 		out.write("Display maze                                 display_maze <name>\n");
 		out.write("Display maze by                              display_cross_section <name> <x/y/z> <index>\n");
@@ -88,9 +88,10 @@ public class CLI extends Observable {
 		out.write("Load the maze                                load_maze <file name> <name>\n");	
 		out.write("Solve the maze                               solve <name> <algorithm>\n");
 		out.write("Display the solution                         display_solution <name>\n");
-		out.write("Exit                                         exit\n");*/
+		out.write("Exit                                         exit\n");
 		out.write("\n");
 	}
+*/
 	
 	/** start */
 	public void start() throws Exception {
@@ -98,13 +99,13 @@ public class CLI extends Observable {
 		Thread thread = new Thread(new Runnable() {
 		
 			String line= null;
-			Command command = null;
+		//	Command command = null;
 	
 		@Override
 		public void run() {
-			printCommands();
+			//printCommands();
 			do{
-			// out.write("Enter command:\n");
+			 out.write("Enter command:\n");
 			 
 				out.flush();
 				try {
@@ -116,8 +117,9 @@ public class CLI extends Observable {
 					e.printStackTrace();
 					}
 			
-				
+				/*
 			String[] args = line.split(" ");
+
 			command = commands.get(args[0]);
 			
 			if (command != null){
@@ -130,7 +132,7 @@ public class CLI extends Observable {
 				out.write("Invalid parameters!\n");
 				
 				out.flush(); 
-			}
+			}*/
 			out.write("\n");
 					
 			} while (!line.equalsIgnoreCase("exit"));

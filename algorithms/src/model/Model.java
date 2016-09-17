@@ -52,5 +52,6 @@ public interface Model {
 	 */
 	String display_Solution(String name);
 
-	
+	void loadMap();
+	void saveMap();
 }

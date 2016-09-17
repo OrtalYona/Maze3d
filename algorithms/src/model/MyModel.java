@@ -39,8 +39,15 @@ public class MyModel extends Observable implements Model {
 	
 	//without Position
 	private Map<String , Solution<Position>> solutions = new HashMap<String , Solution<Position>>();
-	
+//	private HashMap<String,Maze3d> maze = new HashMap<String , Maze3d>();
+
 	private HashMap<Maze3d, Solution<Position>> mazeSolution=new HashMap<Maze3d, Solution<Position>>();
+	
+	File file = new File("newFile.txt");
+
+	private ObjectOutputStream out;
+
+	//private ObjectInputStream in;
 
 	
 	public MyModel(){
@@ -50,23 +57,21 @@ public class MyModel extends Observable implements Model {
 	
 	@Override
 	public void generateMaze(String name,int floor, int rows, int cols) {
-		
-		
+       
 		executor.submit(new Callable<Maze3d>() {
 			
-			@Override
-			public Maze3d call() throws Exception {
+		@Override
+		public Maze3d call() throws Exception {
+		GrowingTreeGenerator generator = new GrowingTreeGenerator();
+		Maze3d maze = generator.generate(floor,rows, cols);
+		mazes.put(name, maze);
+			
+		setChanged();
+		notifyObservers("maze_ready " + name);
+		return maze;
 	
-			GrowingTreeGenerator generator = new GrowingTreeGenerator();
-			Maze3d maze = generator.generate(floor,rows, cols);
-			mazes.put(name, maze);
-				
-			setChanged();
-			notifyObservers("maze ready" + name);
-			return maze;	
-							
-			}	
-		});	
+		}});
+
 	}
 
 	@Override
@@ -131,6 +136,7 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void exit() throws IOException  {
 
+		saveMap();
 		executor.shutdownNow();
 	}
 
@@ -141,7 +147,7 @@ public class MyModel extends Observable implements Model {
 		Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
 		
 		
-	if(!mazeSolution.containsValue(maze)){
+	if(!mazeSolution.containsKey(maze)){//Value?
 			
 		if(algorithms.toLowerCase().equals("bfs")){	
 				
@@ -153,8 +159,9 @@ public class MyModel extends Observable implements Model {
 		    BFS<Position> bfs=new BFS<Position>();
 	        //Solution<Position> solution1 = bfs.search(adapter);
 			Solution<Position> solution=bfs.search(adapter);
-	        solutions.put(name, solution);//solution1
-	        mazeSolution.put(maze, solution);
+	        mazes.put(name, maze);
+			solutions.put(name, solution);//solution1
+	        //mazeSolution.put(maze, solution);
 	        return solution;
 			}	
 	         
@@ -170,17 +177,17 @@ public class MyModel extends Observable implements Model {
 			DFS<Position> dfs= new DFS<Position>();
 			//Solution<Position> solution2 = dfs.search(adapter);
 			Solution<Position> solution=dfs.search(adapter);
+			mazes.put(name, maze);
 			solutions.put(name,solution);//2
-			mazeSolution.put(maze, solution);
+			//mazeSolution.put(maze, solution);
 			return solution;
 		}	
          
         });	
      } 
 	}
-	
 	  setChanged();
-	  notifyObservers("solution ready" + name);
+	  notifyObservers("solve_ready " + name);
 	
 	}
 	
@@ -218,31 +225,41 @@ public class MyModel extends Observable implements Model {
     }
 
 	
-	private void saveMap(){
-		
+	public void saveMap(){
+
 		try{
-		File file = new File("d:/newfile.txt");
+		//File file = new File("newFile.txt");
 		FileOutputStream fileOut=new FileOutputStream(file);
 		GZIPOutputStream zip=new GZIPOutputStream(fileOut);
-		ObjectOutputStream out=new ObjectOutputStream(zip);
-		out.writeObject(mazeSolution); 
+		out = new ObjectOutputStream(zip);
+		System.out.println(this.mazes);
+		System.out.println(this.solutions);
+		out.writeObject(this.mazes);//mazeSolution 
+		out.writeObject(this.solutions);
 		out.flush(); 
 	    out.close();
+		/*out=new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("file")));
+		out.writeObject(this.mazes);
+		out.writeObject(this.solutions);*/
 		}catch (IOException e) { 
 	     e.getStackTrace(); 
 		}
 
 	}
 	
-	private void loadMap(){
-		
-		try{
-		File file = new File("d:/newfile.txt");
-		FileInputStream fileOut=new FileInputStream(file); 
-		GZIPInputStream zip=new GZIPInputStream(fileOut); 
-		ObjectInputStream out=new ObjectInputStream(zip); 
-		mazeSolution = (HashMap<Maze3d, Solution<Position>>) out.readObject(); 
-		out.close(); 
+	 @SuppressWarnings("unchecked")
+	public void loadMap(){
+
+		 try{
+		//File file = new File("newFile.txt");
+		FileInputStream fileIn=new FileInputStream(file); 
+		GZIPInputStream zip=new GZIPInputStream(fileIn); 
+		ObjectInputStream in = new ObjectInputStream(zip); 
+		System.out.println(this.mazes);
+		System.out.println(this.solutions);
+		this.mazes =(Map<String, Maze3d>) in.readObject(); 
+		this.solutions =(Map<String, Solution<Position>>) in.readObject();
+		in.close(); 
 		}catch (IOException e) { 
 		e.getStackTrace(); 
 		} catch (ClassNotFoundException e) {
