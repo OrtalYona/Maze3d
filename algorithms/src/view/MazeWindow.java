@@ -62,8 +62,13 @@ public class MazeWindow extends BasicWindow {
 		Button btnLoadMaze = new Button (buttons ,SWT.PUSH); //
 		btnLoadMaze.setText("Load maze"); 
 		
+		Button btnHint = new Button (buttons ,SWT.PUSH); //
+		btnHint.setText("Hint"); 
+		
 		Button btnProperties = new Button (buttons ,SWT.PUSH); //
 		btnProperties.setText("Properties"); 
+		
+		
 		
 		mazeDisplay = new MazeDisplay(shell, SWT.BORDER);	
 		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -72,6 +77,7 @@ public class MazeWindow extends BasicWindow {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				
 				
 				String[] args= {"solve", mazeName}; 
 				Command command= commands.get("solve"); 
@@ -135,6 +141,20 @@ public class MazeWindow extends BasicWindow {
 			
 		});
 		
+		btnHint.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	
 	}
 

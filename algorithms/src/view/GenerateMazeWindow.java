@@ -68,7 +68,7 @@ public class GenerateMazeWindow extends DialogWindow {
 				shell.close();
 				
 				String [] args= {"generate_3d_maze", mw.getMazeName(), "floor", "rows", "cols"}; 
-				Command command = commands.get("generate_3d_maze"); 
+				commands.get("generate_3d_maze"); 
 				view.update(args);
 			}
 			

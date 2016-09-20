@@ -1,14 +1,10 @@
 package view;
 
-import java.io.PrintWriter;
-
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-
-import algorithms.mazeGenerators.Maze3d;
 
 public class MazeDisplay extends Canvas {
 

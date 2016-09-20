@@ -1,7 +1,5 @@
 package view;
 
-
-
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
@@ -12,7 +10,7 @@ public class Character {
 	private Image img;
 	
 	public Character() {
-		img = new Image(null, "images/character.jpg");
+		img = new Image(null, "images/character.jpg‬");
 	}
 
 	public Position getPos() {
