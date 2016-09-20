@@ -6,13 +6,18 @@ import java.io.PrintWriter;
 
 import model.MyModel;
 import presenter.Presenter;
+import view.MazeWindow;
 import view.MyView;
 
 public class Run {
 
 	public static void main(String[] args) throws Exception {
 	
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		
+		MazeWindow win = new MazeWindow();
+		win.start();
+		
+		/*BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
 				
 		MyView view = new MyView(out, in);
@@ -22,7 +27,7 @@ public class Run {
 		model.addObserver(presenter);
 		view.addObserver(presenter);
 		
-		view.start();
+		view.start();*/
 	}
-
+	
 }

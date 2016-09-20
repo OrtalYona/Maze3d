@@ -12,7 +12,7 @@ public class CommandManager {
 		private Model model;
 		private View view;
 		private HashMap<String, Command> commands=new HashMap<String, Command>();
-		
+		String[] arg;
 		public CommandManager(Model myModel,View myView) {
 			this.view = myView;
 			this.model = myModel;
@@ -53,6 +53,11 @@ public class CommandManager {
 			//else{
 				//view.print("Invalid input\n");
 			//}
+
+		@Override
+		public void setArguments(String[] args) {
+			arg=args;
+		}
 	   }
 
 	//}
@@ -73,6 +78,11 @@ public class CommandManager {
 				view.print("Invalid input");
 			}
 		}
+
+		@Override
+		public void setArguments(String[] args) {
+         arg=args;			
+		}
 	  }
 
 	/**
@@ -92,6 +102,11 @@ public class CommandManager {
 			view.print("Error no arguments");
 			}
 		}
+
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;			
+		}
 	}
 
 	/**
@@ -107,6 +122,11 @@ public class CommandManager {
 			} catch (IOException e) {
 				view.print("Can't close");
 			}
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;			
 		}
 	}
 
@@ -125,6 +145,11 @@ public class CommandManager {
 			view.print("Invalid input");
 		}
 	  }
+
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;			
+		}
 	}
 	/**
 	 Save
@@ -139,6 +164,11 @@ public class CommandManager {
 			catch (ArrayIndexOutOfBoundsException e){
 				view.print("Invalid input");
 			}
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;			
 		}
 	}
 
@@ -169,6 +199,11 @@ public class CommandManager {
 				view.print("invalid paramters");
 		}
 
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;			
+		}
+
 	}
 		
 	/**
@@ -188,6 +223,11 @@ public class CommandManager {
 				view.print("Invalid input");
 			}
 	 }
+
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;			
+		}
 	}
 
 	/**
@@ -205,6 +245,11 @@ public class CommandManager {
 				view.print("invalid input");
 			}
 	   }
+
+		@Override
+		public void setArguments(String[] args) {
+	         arg=args;					
+		}
 	 }
 	class MazeReadyCommand implements Command {//add solution ready
 
@@ -214,6 +259,12 @@ public class CommandManager {
 			String msg = "maze " + name + " is ready";
 		view.print(msg);
 		}
+
+	@Override
+	public void setArguments(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
 		
 	}
 	
@@ -224,6 +275,12 @@ public class CommandManager {
 			String name = args[0];
 			String msg = "solve " + name + " is ready";
 		view.print(msg);
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	}

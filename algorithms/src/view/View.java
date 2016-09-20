@@ -2,6 +2,7 @@ package view;
 
 
 import algorithms.mazeGenerators.Maze3d;
+import presenter.Command;
 
 public interface View {
 	
@@ -44,6 +45,7 @@ public interface View {
 	 * set controller
 	 * @param controller
 	 */
-
+	//public void setUserCommand(Command command);
+	void update(String[] args);
 
 }
