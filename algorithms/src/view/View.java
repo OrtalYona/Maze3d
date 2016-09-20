@@ -2,7 +2,7 @@ package view;
 
 
 import algorithms.mazeGenerators.Maze3d;
-import presenter.Command;
+
 
 public interface View {
 	

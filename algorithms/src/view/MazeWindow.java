@@ -10,13 +10,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 
+import Properties.Properties;
 import presenter.Command;
 
 public class MazeWindow extends BasicWindow {
 
+	Properties pro=new Properties();
 	private MazeDisplay mazeDisplay;
 	//CommonBorder boardWidget;
 	protected HashMap<String, Command> commands;
@@ -49,23 +49,21 @@ public class MazeWindow extends BasicWindow {
 				
 			}
 		});
-		
-		//boardWidget=new MazeBoard(shell, SWT.NONE);
-		
+				
 		
 		Button btnSolveMaze = new Button(buttons, SWT.PUSH);
 		btnSolveMaze.setText("Solve maze");
 		
-		Button btnSaveMaze = new Button(buttons ,SWT.PUSH);// 
+		Button btnSaveMaze = new Button(buttons ,SWT.PUSH); 
 		btnSaveMaze.setText("Save maze"); 
 				
-		Button btnLoadMaze = new Button (buttons ,SWT.PUSH); //
+		Button btnLoadMaze = new Button (buttons ,SWT.PUSH); 
 		btnLoadMaze.setText("Load maze"); 
 		
-		Button btnHint = new Button (buttons ,SWT.PUSH); //
+		Button btnHint = new Button (buttons ,SWT.PUSH); 
 		btnHint.setText("Hint"); 
 		
-		Button btnProperties = new Button (buttons ,SWT.PUSH); //
+		Button btnProperties = new Button (buttons ,SWT.PUSH); 
 		btnProperties.setText("Properties"); 
 		
 		
@@ -78,9 +76,10 @@ public class MazeWindow extends BasicWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				
+				String algorithm=pro.getGenerateMazeAlgorithm();
 				
-				String[] args= {"solve", mazeName}; 
-				Command command= commands.get("solve"); 
+				String[] args= {"solve", mazeName,algorithm}; 
+				commands.get("solve"); 
 				//command.setArguments(args); 
 				view.update(args);	
 			}
@@ -97,7 +96,7 @@ public class MazeWindow extends BasicWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				String[] args={"save_maze",mazeName};
-				Command command= commands.get("save_maze");
+				commands.get("save_maze");
 				view.update(args);
 			}
 			
@@ -113,7 +112,7 @@ public class MazeWindow extends BasicWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				String[] args={"load_maze",mazeName};
-				Command command= commands.get("load_maze");
+				commands.get("load_maze");
 				view.update(args);
 				
 			}

@@ -1,7 +1,6 @@
 package view;
 
-import org.eclipse.swt.SWT;import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -9,10 +8,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 
-import presenter.Command;
+import Properties.Properties;
+
+
 
 public class PropertiesWindow extends DialogWindow{
 
+	Properties pro=new Properties();
+	String solve;
+	String maze;
+	
 	@Override
 	protected void initWidgets() {
 		shell.setText("Properties");
@@ -50,8 +55,7 @@ public class PropertiesWindow extends DialogWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				maze="simpleMaze";
 			}
 			
 			@Override
@@ -65,8 +69,7 @@ public class PropertiesWindow extends DialogWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				maze="GrowingTree";
 			}
 			
 			@Override
@@ -80,9 +83,7 @@ public class PropertiesWindow extends DialogWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				
-				String[] args={"bfs"};
-			//	Command command= commands.get("save_maze");
+				solve="bfs";
 				
 			}
 			
@@ -97,7 +98,7 @@ public class PropertiesWindow extends DialogWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
+				solve="dfs";
 				
 			}
 			
@@ -108,6 +109,38 @@ public class PropertiesWindow extends DialogWindow{
 			}
 		});
 		
+		btnP.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+
+				pro.setGenerateMazeAlgorithm(maze);
+				pro.setSolveMazeAlgorithm(solve);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		btnR.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+
+				pro.setGenerateMazeAlgorithm(null);
+				pro.setSolveMazeAlgorithm(null);
+			
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 	
