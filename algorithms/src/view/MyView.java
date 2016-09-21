@@ -93,8 +93,8 @@ public class MyView extends Observable implements View, Observer {
 		
 	}
 
-	@Override
-	public void update(String[] args) {
+    @Override
+	public void update(String args) {
 		
 		setChanged();
 		notifyObservers(args);

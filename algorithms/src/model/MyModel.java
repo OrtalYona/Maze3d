@@ -49,28 +49,28 @@ public class MyModel extends Observable implements Model {
 	// private ObjectInputStream in;
 
 	public MyModel() {
-		properties = PropertiesLoader.getInstance().getProperties();
-		executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
-	//	executor = Executors.newFixedThreadPool(50);
+	//	properties = PropertiesLoader.getInstance().getProperties();
+		//executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
+		executor = Executors.newFixedThreadPool(50);
 	}
 
 	@Override
 	public void generateMaze(String name, int floor, int rows, int cols) {
 
-		executor.submit(new Callable<Maze3d>() {
+		//executor.submit(new Callable<Maze3d>() {
 
-			@Override
-			public Maze3d call() throws Exception {
+			//@Override
+		//	public Maze3d call() throws Exception {
 				GrowingTreeGenerator generator = new GrowingTreeGenerator();
 				Maze3d maze = generator.generate(floor, rows, cols);
 				mazes.put(name, maze);
 
 				setChanged();
 				notifyObservers("maze_ready " + name);
-				return maze;
+			//	return maze;
 
-			}
-		});
+			//}
+		//});
 
 	}
 

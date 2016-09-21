@@ -1,6 +1,9 @@
 package view;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Observable;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -8,23 +11,44 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import presenter.Command;
 
-public class GenerateMazeWindow extends DialogWindow {
-	View view;
+public class GenerateMazeWindow extends DialogWindow {//Observable{
+	//
+	
+protected Shell shell;		
+	public void start(Display display) {		
+		shell = new Shell(display);
+		
+		initWidgets();
+		shell.open();		
+	}
+	
+	private PrintWriter out;
+	private BufferedReader in;
+	View view=new MyView(out, in);
 	MazeWindow mw=new MazeWindow();
-	protected HashMap<String, Command> commands;
+	protected HashMap<String, Command> commands=new HashMap<String,Command>();
+     String name=new String();
 
-	@Override
 	protected void initWidgets() {
 		shell.setText("Generate maze window");
 		shell.setSize(300, 200);		
-				
+		
 		shell.setLayout(new GridLayout(2, false));	
+		
+		Label lblName = new Label(shell, SWT.NONE);
+		lblName.setText("Name: ");
+		
+		Text txtName = new Text(shell, SWT.BORDER);
+		txtName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		
 		Label lblFloor = new Label(shell, SWT.NONE);
 		lblFloor.setText("Floor: ");
 		
@@ -61,14 +85,21 @@ public class GenerateMazeWindow extends DialogWindow {
 				int rows = Integer.parseInt(txtRows.getText());
 				int cols = Integer.parseInt(txtCols.getText());
 				
+				name=txtName.getText();
+				
 				msg.setMessage("Generating maze with floor: " + floor + " rows: " + rows + " cols: " + cols);
 				
 				msg.open();
 				shell.close();
 				
-				String [] args= {"generate_3d_maze", mw.getMazeName(), "floor", "rows", "cols"}; 
+				//String[] args= {"generate_3d_maze" ,mw.getMazeName(),"floor", "rows","cols"};
+				
+				String args= "generate_3d_maze" +" " +name+" "+floor+" " + rows +" "+cols;
 				commands.get("generate_3d_maze"); 
-				view.update(args);
+				//setChanged();
+				//notifyObservers(args);
+			    view.update(args);
+			
 			}
 			
 			@Override

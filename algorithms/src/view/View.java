@@ -1,6 +1,8 @@
 package view;
 
 
+import java.util.Observable;
+
 import algorithms.mazeGenerators.Maze3d;
 
 
@@ -46,6 +48,9 @@ public interface View {
 	 * @param controller
 	 */
 	//public void setUserCommand(Command command);
-	void update(String[] args);
+	
+	void update(String args);//[]
+
+	//public void update(Observable obs, Object arg);
 
 }

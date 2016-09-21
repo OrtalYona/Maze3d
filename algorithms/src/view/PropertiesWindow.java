@@ -1,24 +1,34 @@
 package view;
 
+import java.util.Observable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Shell;
 
 import Properties.Properties;
 
 
 
-public class PropertiesWindow extends DialogWindow{
-
+public class PropertiesWindow extends Observable{//DialogWindow{
+	
+	protected Shell shell;	
+	public void start(Display display) {		
+	shell = new Shell(display);	
+		initWidgets();
+		shell.open();		
+	}
+	
 	Properties pro=new Properties();
 	String solve;
 	String maze;
 	
-	@Override
 	protected void initWidgets() {
 		shell.setText("Properties");
 		shell.setSize(350, 350);

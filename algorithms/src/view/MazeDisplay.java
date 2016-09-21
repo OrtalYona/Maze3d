@@ -6,12 +6,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import algorithms.mazeGenerators.Position;
-
 public class MazeDisplay extends Canvas {
-
-//	Maze3d maze3d=new Maze3d(5, 5, 5);
-	//PrintWriter out;
 	
 
 	private int[][] mazeData = {
@@ -29,7 +24,6 @@ public class MazeDisplay extends Canvas {
 
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
-		Character chare=new Character();
 		this.addPaintListener(new PaintListener() {
 				
 			@Override
@@ -49,7 +43,6 @@ public class MazeDisplay extends Canvas {
 				          int y=i*h;
 				          if(mazeData[i][j]!=0)
 				              e.gc.fillRectangle(x,y,w,h);
-				          
 				          
 				      }
 				   }

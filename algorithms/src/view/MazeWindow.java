@@ -1,6 +1,10 @@
 package view;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,18 +14,41 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import Properties.Properties;
 import presenter.Command;
 
-public class MazeWindow extends BasicWindow {
+public class MazeWindow extends DialogWindow{// Observable implements Observer,View {
+
+    protected Shell shell;	
+	protected Display display;
+
+	public void start() {
+		display = new Display();
+		shell = new Shell(display);
+		
+		initWidgets();
+		shell.open();		
+		
+		// main event loop
+		while(!shell.isDisposed()){ // window isn't closed
+			if(!display.readAndDispatch()){
+				display.sleep();
+			}
+		}
+		display.dispose();
+	}
 
 	Properties pro=new Properties();
 	private MazeDisplay mazeDisplay;
-	//CommonBorder boardWidget;
-	protected HashMap<String, Command> commands;
+	protected HashMap<String, Command> commands=new HashMap<String,Command>();
 	String mazeName;
-	View view;
+	//protected HashMap<String, Maze3d> mazeName=new HashMap<String,Maze3d>();
+	private BufferedReader in;
+	private PrintWriter out;
+	View view=new MyView(out, in);
 	
 	@Override
 	protected void initWidgets() {
@@ -35,18 +62,20 @@ public class MazeWindow extends BasicWindow {
 		Button btnGenerateMaze = new Button(buttons, SWT.PUSH);
 		btnGenerateMaze.setText("Generate maze");
 		
+	
+	//	win.addObserver(this);
+		
 		btnGenerateMaze.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				GenerateMazeWindow win = new GenerateMazeWindow();				
+				GenerateMazeWindow win = new GenerateMazeWindow();
 				win.start(display);
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub	
 			}
 		});
 				
@@ -78,9 +107,11 @@ public class MazeWindow extends BasicWindow {
 				
 				String algorithm=pro.getGenerateMazeAlgorithm();
 				
-				String[] args= {"solve", mazeName,algorithm}; 
+			//	String[] args= {"solve", mazeName,algorithm}; 
+				String args="solve"+" " +mazeName +" "+ algorithm;
 				commands.get("solve"); 
-				//command.setArguments(args); 
+			//	setChanged();
+				//notifyObservers(args);
 				view.update(args);	
 			}
 			
@@ -95,8 +126,13 @@ public class MazeWindow extends BasicWindow {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				String[] args={"save_maze",mazeName};
+				//String[] args={"save_maze",mazeName};
+				String args="save_maze"+" "+mazeName;
+
 				commands.get("save_maze");
+				//setChanged();
+			//	notifyObservers(args);
+
 				view.update(args);
 			}
 			
@@ -111,8 +147,11 @@ public class MazeWindow extends BasicWindow {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				String[] args={"load_maze",mazeName};
+				//String[] args={"load_maze",mazeName};
+				String args="load_maze"+" "+mazeName;
 				commands.get("load_maze");
+				//setChanged();
+				//notifyObservers(args);
 				view.update(args);
 				
 			}
@@ -124,6 +163,8 @@ public class MazeWindow extends BasicWindow {
 			}
 		});
 		
+					
+		//pw.addObserver(this);
 		btnProperties.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -133,8 +174,8 @@ public class MazeWindow extends BasicWindow {
 			}
 
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-					PropertiesWindow pw=new PropertiesWindow();				
+			public void widgetSelected(SelectionEvent arg0) {	
+				PropertiesWindow pw=new PropertiesWindow();
 					pw.start(display);
 				}
 			
@@ -160,5 +201,4 @@ public class MazeWindow extends BasicWindow {
 	public String getMazeName() {
 		return mazeName;
 	}
-
 }
