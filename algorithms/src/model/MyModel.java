@@ -18,8 +18,6 @@ import java.util.concurrent.Executors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import Properties.Properties;
-import Properties.PropertiesLoader;
 import algorithms.demo.Maze3dSearchableAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
 import algorithms.mazeGenerators.Maze3d;
@@ -37,22 +35,14 @@ public class MyModel extends Observable implements Model {
 	MyCompressorOutputStream myCompressor;
 	MyDecompressorInputStream myDecompressor;
 	private Map<String, Maze3d> mazes = new ConcurrentHashMap<String, Maze3d>();
-
-	// without Position
 	private Map<String, Solution<Position>> solutions = new HashMap<String, Solution<Position>>();
-	// private HashMap<String,Maze3d> maze = new HashMap<String , Maze3d>();
-
 	public ArrayList<String> mazesNames=new ArrayList<>();
-
 	private HashMap<Maze3d, Solution<Position>> mazeSolution = new HashMap<Maze3d, Solution<Position>>();
-
 	private final String file ="newFile.zip"; //"newFileM.zip";
-	private final String fileNames ="FileNames.zip"; 
-	
-	private Properties properties;
+//	private final String fileNames ="FileNames.zip"; 
+//	private Properties properties;
 	String str;
 
-	// private ObjectInputStream in;
 
 	public MyModel() {
 	//	properties = PropertiesLoader.getInstance().getProperties();
@@ -73,7 +63,6 @@ public class MyModel extends Observable implements Model {
 				mazesNames.add(name);//String
 				saveMazes();
 				saveSolutions();
-				//saveMap();2 save
 				sendMazesNames(name);
 				setChanged();
 				notifyObservers("maze_ready " + name);
@@ -268,16 +257,8 @@ public class MyModel extends Observable implements Model {
 			FileOutputStream fileOut=new FileOutputStream(file);
 			 GZIPOutputStream zip=new GZIPOutputStream(fileOut);
 			 out = new ObjectOutputStream(zip);
-			 //System.out.println(this.mazes);
-			// System.out.println(this.solutions);
-			 out.writeObject(this.mazes);//mazeSolution
+			 out.writeObject(this.mazes);
 			 out.writeObject(this.solutions);
-			
-			/*out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(file)));
-
-			out.writeObject(this.mazes);
-			out.writeObject(this.solutions);*/
-
 			out.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -298,8 +279,6 @@ public class MyModel extends Observable implements Model {
 
 			this.mazes = (Map<String, Maze3d>) in.readObject();
 			this.solutions = (Map<String, Solution<Position>>) in.readObject();
-			//System.out.println(this.mazes);
-			//System.out.println(this.solutions);
 			in.close();
 		} catch (IOException e) {
 			e.getStackTrace();
@@ -314,7 +293,6 @@ public class MyModel extends Observable implements Model {
 		try{
 			out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("AllMazesCatch")));//fileNames
 			out.writeObject(this.mazes);
-			//System.out.println(this.mazes);
 			out.close();
 			} catch (IOException e1) {
 				str = "save faild";
@@ -364,10 +342,9 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void DeleteAndS(){
 		this.mazes.clear();
-		//this.solutions.clear();
-		
+		this.solutions.clear();
 		setChanged();
-		notifyObservers("display_msg Data_erased!");
+		notifyObservers("message Reset!");
 	}
 	
 	@Override
@@ -375,20 +352,6 @@ public class MyModel extends Observable implements Model {
 		
 		//properties.setGenerateMazeAlgorithm(args[0]);
 		//properties.setSolveMazeAlgorithm(args[1]);
-	
-		
-		/*	String s="bfs";
-		
-		if(args[0]=="GrowingTree")
-			properties.setGenerateMazeAlgorithm("GrowingTree");
-		else
-			properties.setGenerateMazeAlgorithm("simpleMaze");
-			
-		if(args[1]=="bfs")
-			properties.setSolveMazeAlgorithm("bfs");
-		else
-			properties.setSolveMazeAlgorithm("dfs");
-	*/	
 	}
 	
 	@Override
@@ -397,6 +360,7 @@ public class MyModel extends Observable implements Model {
 		this.mazes.clear();
 		this.solutions.clear();
   }
+	
 	public void saveSolutions(){
 		ObjectOutputStream oos=null;
 		try{
@@ -408,8 +372,7 @@ public class MyModel extends Observable implements Model {
 			}
 	}
 		
-		
-
+	@SuppressWarnings("unchecked")
 	public void loadSolutions()  {
 		ObjectInputStream ois=null;
 		try{
@@ -419,10 +382,9 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e1) {
 			str = "load faild";
 		} catch (ClassNotFoundException e) {
-			str = "load faild- class not found";
+			str = "load faild";
 			e.printStackTrace();
 		}
-		str="Mazes loaded!\n";
 		
 	}
 	
@@ -434,6 +396,7 @@ public class MyModel extends Observable implements Model {
 			oos.writeObject(this.mazes.get(name));
 			oos.close();
 			} catch (IOException e1) {
+			
 			}
 }
 	
@@ -446,8 +409,5 @@ public class MyModel extends Observable implements Model {
 			oos.close();
 			} catch (IOException e1) {
 			}
-}
-	
-	
-	
+	}
 }

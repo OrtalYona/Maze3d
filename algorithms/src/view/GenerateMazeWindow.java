@@ -1,8 +1,5 @@
 package view;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Observable;
 
 import org.eclipse.swt.SWT;
@@ -17,25 +14,23 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import presenter.Command;
-
-public class GenerateMazeWindow extends Observable{//DialogWindow {//Observable{
-	//
+/**
+ * generate maze window
+ * @author Ortal Yona
+ *
+ */
+public class GenerateMazeWindow extends Observable{
 	
 	Shell shell;
-	
+	String name=new String();
+
 	
 	public void start(Display display) {		
 		shell = new Shell(display);
 		initWidgets();
 		shell.open();		
 	}
-	//private PrintWriter out;
-	//private BufferedReader in;
-	//View view=new MyView(out, in);
-	//MazeWindow mw=new MazeWindow();
-	//protected HashMap<String, Command> commands=new HashMap<String,Command>();
-     String name=new String();
+	
 
 	protected void initWidgets() {
 		shell.setText("Generate maze window");
@@ -78,9 +73,7 @@ public class GenerateMazeWindow extends Observable{//DialogWindow {//Observable{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {				
 				MessageBox msg = new MessageBox(shell, SWT.OK);
-				msg.setText("Title");
-				//msg.setMessage("Button was clicked");
-				
+				msg.setText("Title");				
 				int floor = Integer.parseInt(txtFloor.getText());
 				int rows = Integer.parseInt(txtRows.getText());
 				int cols = Integer.parseInt(txtCols.getText());
@@ -89,10 +82,7 @@ public class GenerateMazeWindow extends Observable{//DialogWindow {//Observable{
 				
 				msg.setMessage("Generating maze with floor: " + floor + " rows: " + rows + " cols: " + cols);
 				msg.open();
-				shell.close();
-				
-				
-				//String args= "generate_3d_maze" +" " +name+" "+floor+" " + rows +" "+cols;
+				shell.close();				
 				setChanged();
 				notifyObservers("generate_3d_maze" +" " +name+" "+floor+" " + rows +" "+cols);//(args);
 

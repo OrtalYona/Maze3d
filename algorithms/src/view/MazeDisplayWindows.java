@@ -14,6 +14,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * class maze display window
+ * @author Ortal Yona
+ *
+ */
 public class MazeDisplayWindows extends Observable {
 	
 	String update;

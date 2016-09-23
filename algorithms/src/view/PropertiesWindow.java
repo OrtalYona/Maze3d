@@ -18,10 +18,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import Properties.Properties;
-import algorithms.mazeGenerators.Maze3d;
 
-
-
+/**
+ * properties window
+ * @author Ortal Yona
+ *
+ */
 public class PropertiesWindow extends Observable{
 	
 	protected Shell shell;	

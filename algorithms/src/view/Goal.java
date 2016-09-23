@@ -5,6 +5,11 @@ import org.eclipse.swt.graphics.Image;
 
 import algorithms.mazeGenerators.Position;
 
+/**
+ * Goal image and position
+ * @author
+ *
+ */
 public class Goal {
 	
 	private Position pos;

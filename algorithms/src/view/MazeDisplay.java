@@ -4,8 +4,6 @@ package view;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.GZIPInputStream;
@@ -16,17 +14,17 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
-
+/**
+ * maze display
+ * @author 
+ *
+ */
 public class MazeDisplay extends Canvas {
 	
 	private Character character;
@@ -55,7 +53,7 @@ public class MazeDisplay extends Canvas {
 				
 			@Override
 			public void keyPressed(KeyEvent e) {
-			Position pos = character.getPos();
+		//	Position pos = character.getPos();
 			int temp;
 			switch (e.keyCode) {
 			
@@ -211,14 +209,14 @@ public class MazeDisplay extends Canvas {
 					@Override
 					public void run() {
 										
-						//if(i<sol.getSize()){
+						if(i<sol.getSize()){
 						where=whereToMove(sol.getStates().get(i).getPosition(), sol.getStates().get(i+1).getPosition());
 						
 						
 						int temp;
 						switch(where){
 							case"down":
-									temp=curFloor;									
+									temp=curFloor;	
 										character.moveDown();
 										curFloor--;
 										mazeCurFloor=maze.getCrossSectionByZ(curFloor);
@@ -251,7 +249,7 @@ public class MazeDisplay extends Canvas {
 									break;
 						}
 						redraw();
-						//}
+						}
 						i++;
 //							if(i<sol.getSize())
 //								character.setPos(sol.getStates().get(i).getPosition());

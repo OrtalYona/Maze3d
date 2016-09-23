@@ -7,25 +7,15 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+/**
+ * read and write properties
+ * @author 
+ *
+ */
 public class PropertiesLoader {
 	
 	private static Properties properties;
 	
-	/*public Properties getProperties() {
-		return properties;
-	}*/
-/*	private PropertiesLoader() 
-	{
-		try {
-	    	XMLDecoder decoder= new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
-			//XMLDecoder decoder = new XMLDecoder(new FileInputStream("properties.xml"));
-			properties = (Properties)decoder.readObject();
-			decoder.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-	}
-*/		
 		public static Properties getInstance() throws Exception {
 			if (properties == null) 
 				properties = read("newPro.xml");

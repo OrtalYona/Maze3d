@@ -3,6 +3,11 @@ package view;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * class dialog window
+ * @author Ortal Yona
+ *
+ */
 public abstract class DialogWindow {
 	protected Shell shell;		
 	protected abstract void initWidgets();

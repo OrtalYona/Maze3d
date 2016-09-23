@@ -3,7 +3,11 @@ package Properties;
 
 import java.io.Serializable;
 
-
+/**
+ * class properties
+ * @author 
+ *
+ */
 public class Properties implements Serializable {
 
 	/***/
@@ -20,20 +24,10 @@ public class Properties implements Serializable {
 	public enum MazeSolve{
 		BFS,DFS
 	}
-	
-	//public MazeGenerator generator;
-	//public MazeSolve solve;
-	
-/*	public Properties(int num, String gen, String solve) {
-	
-		this.numOfThreads=num;
-		this.generateMazeAlgorithm=gen;
-		this.solveMazeAlgorithm=solve;	
-	
-	//	this.solve=MazeSolve.BFS;
-
-	}*/
-
+/**
+ * setters and getters
+ * @return
+ */
 	public int getNumOfThreads() {
 		return numOfThreads;
 	}
@@ -57,27 +51,6 @@ public class Properties implements Serializable {
 	public void setSolveMazeAlgorithm(String solveMazeAlgorithm) {
 		this.solveMazeAlgorithm = solveMazeAlgorithm;
 	}
-
-	/*public MazeGenerator getGenerator() {
-		return generator;
-	}
-
-	public void setGenerator(MazeGenerator generator) {
-		this.generator = generator;
-	}
-
-	public MazeSolve getSolve() {
-		return solve;
-	}
-
-	public void setSolve(MazeSolve solve) {
-		this.solve = solve;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	*/
 }
 
 //XMLEncoder xmlEncoder;

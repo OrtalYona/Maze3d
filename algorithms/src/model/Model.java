@@ -52,23 +52,50 @@ public interface Model {
 	 */
 	String display_Solution(String name);
 
+	/**
+	 * load solution and name
+	 */
 	void loadMap();
+	/**
+	 * solve solution and name
+	 */
 	void saveMap();
 
+	/**
+	 * save maze
+	 */
 	void saveMazes();
 
+	/**
+	 * load maze
+	 */
 	void loadMazes();
-
+/**
+ * get notification
+ * @return
+ */
 	String getMessage();
 	
+	/**
+	 * get the name of the maze
+	 * @return
+	 */
 	public String getMazesNames();
 
+	/**
+	 * reset
+	 */
 	void DeleteAndS();
 
+	/**
+	 * set properties
+	 * @param args
+	 */
 	void SetProperties(String[] args);
 
+	/**
+	 * reset
+	 */
 	void eraseAll();
-
-
 
 }

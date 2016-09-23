@@ -99,11 +99,9 @@ public class CLI extends Observable {
 		Thread thread = new Thread(new Runnable() {
 		
 			String line= null;
-		//	Command command = null;
 	
 		@Override
 		public void run() {
-			//printCommands();
 			do{
 			 out.write("Enter command:\n");
 			 
@@ -116,23 +114,6 @@ public class CLI extends Observable {
 				catch (IOException e) {
 					e.printStackTrace();
 					}
-			
-				/*
-			String[] args = line.split(" ");
-
-			command = commands.get(args[0]);
-			
-			if (command != null){
-				
-				command.doCommand(args);	
-			}
-	
-			else{
-				
-				out.write("Invalid parameters!\n");
-				
-				out.flush(); 
-			}*/
 			out.write("\n");
 					
 			} while (!line.equalsIgnoreCase("exit"));

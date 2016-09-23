@@ -32,6 +32,11 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import presenter.Command;
 
+/**
+ * maze window 
+ * @author Ortal Yona
+ *
+ */
 public class MazeWindow extends Observable implements Observer,View {
 
     protected Shell shell;	
@@ -53,7 +58,7 @@ public class MazeWindow extends Observable implements Observer,View {
 		this.in = in;
 		this.out = out;
 		this.pro=pro;
-		loadMazes();///////////////////////////////add//////////////////////////
+		loadMazes();
 	}
 	
 	public void start() {
@@ -135,9 +140,9 @@ public class MazeWindow extends Observable implements Observer,View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				saveMazes();
 				mdw.start(display);
 				mazeDisplay.setMazeData(maze);
-				
 			}
 			
 			@Override
@@ -160,9 +165,9 @@ public class MazeWindow extends Observable implements Observer,View {
 				//SolveMazeWindow smw=new SolveMazeWindow();
 			//	smw.start(display);	
 				
-				loadSolveName();
+			//	loadSolveName();
 				setChanged();
-				notifyObservers("solve myMaze bfs);//"+" " +solveName);
+				notifyObservers("solve newMaze3d bfs");// +solveName);
 			
 				loadCurrentSolution();
 				mazeDisplay.setSolution(solution);
@@ -210,7 +215,9 @@ public class MazeWindow extends Observable implements Observer,View {
 			}
 		});
 		*/
-		
+		/**
+		 * properties
+		 */
 		PropertiesWindow pw = new PropertiesWindow();
 		pw.addObserver(this);	
 		btnProperties.addSelectionListener(new SelectionListener() {
@@ -227,26 +234,26 @@ public class MazeWindow extends Observable implements Observer,View {
 			
 		});
 		
-		btnHint.addSelectionListener(new SelectionListener() {
+	/*	btnHint.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 
 				loadCurrentSolution();
 				
-				
-				
-				
-				
-			}
 			
+			}
+	
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 		});
-
+*/
+		/**
+		 * exit
+		 */
 		btnE.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -324,6 +331,9 @@ public class MazeWindow extends Observable implements Observer,View {
 		
 	}
 
+	/**
+	 * update
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg=="eraseAll"){
@@ -336,34 +346,37 @@ public class MazeWindow extends Observable implements Observer,View {
 		notifyObservers(arg);
 	}
 	
+	/**
+	 * information
+	 */
 	@Override
 	public void getInformation(String name){
 		this.mazeName.add(name);
 	}
 	
 	
-	
+	/**
+	 * save the mazes
+	 */
 	public void saveMazes(){
 		ObjectOutputStream out=null;
 		try{
 			out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("AllMazesNamesCatch")));
 			out.writeObject(this.mazeName);
-			//System.out.println("Save mazeName");
-			//System.out.println(this.mazeName);
-
 			out.close();
 			} catch (IOException e1) {
 			}
 	}
 	
+	/**
+	 * load the mazes
+	 */
 	@SuppressWarnings("unchecked")
 	public void loadMazes(){
 		ObjectInputStream in=null;
 		try{
 			in = new ObjectInputStream(new GZIPInputStream(new FileInputStream("AllMazesNamesCatch")));
 			this.mazeName=(ArrayList<String>) in.readObject();
-			//System.out.println("Load mazeName:");
-			//System.out.println(this.mazeName);
 			in.close();
 		} catch (IOException e1) {
 
@@ -372,6 +385,9 @@ public class MazeWindow extends Observable implements Observer,View {
 		}
 	}
 	
+	/**
+	 * load the current maze
+	 */
 	public void loadCurrentMaze(){
 		ObjectInputStream ois=null;
 		try{
@@ -384,6 +400,10 @@ public class MazeWindow extends Observable implements Observer,View {
 		}
 
 	}	
+	
+	/**
+	 * load the current solution
+	 */
 	@SuppressWarnings("unchecked")
 	public void loadCurrentSolution(){
 		ObjectInputStream ois=null;
@@ -398,18 +418,4 @@ public class MazeWindow extends Observable implements Observer,View {
 		}
 	}
 	
-	public void loadSolveName(){
-		ObjectInputStream in=null;
-		try{
-			in = new ObjectInputStream(new GZIPInputStream(new FileInputStream("SolveMazename")));
-			this.mazeName=(ArrayList<String>) in.readObject();
-			//System.out.println("Load mazeName:");
-			//System.out.println(this.mazeName);
-			in.close();
-		} catch (IOException e1) {
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 }
