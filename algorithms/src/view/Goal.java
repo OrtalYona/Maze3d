@@ -16,7 +16,7 @@ public class Goal {
 	private Image img;
 	
 	public Goal() {
-		img = new Image(null, "images/tar.jpg");
+		img = new Image(null, "images/goal.gif");
 	}
 
 	public Position getPos() {

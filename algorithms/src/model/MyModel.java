@@ -351,8 +351,8 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void SetProperties(String[] args){
 		
-		properties.setGenerateMazeAlgorithm(args[0]);
-		properties.setSolveMazeAlgorithm(args[1]);
+	//	properties.setGenerateMazeAlgorithm(args[0]);
+	//	properties.setSolveMazeAlgorithm(args[1]);
 	}
 	
 	@Override

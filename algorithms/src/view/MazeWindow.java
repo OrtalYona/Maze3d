@@ -168,7 +168,7 @@ public class MazeWindow extends Observable implements Observer,View {
 				
 			//	loadSolveName();
 				setChanged();
-				notifyObservers("solve newMaze3d bfs");// +solveName);
+				notifyObservers("solve ortali bfs");// +solveName);
 			
 				loadCurrentSolution();
 				mazeDisplay.setSolution(solution);

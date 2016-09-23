@@ -62,7 +62,7 @@ public class MazeDisplay extends Canvas {
 				switch (e.keyCode) {
 				
 				case SWT.ARROW_DOWN:
-					if(allPossible.contains(new Position(curFloor,character.getPos().y+1,character.getPos().z))){
+					if(Iscontains(allPossible,new Position(curFloor,character.getPos().y+1,character.getPos().z))){
 						character.moveBack();
 						redraw();
 					}
@@ -73,16 +73,18 @@ public class MazeDisplay extends Canvas {
 					break;
 
 				case SWT.ARROW_UP:
-					if (character.getPos().y - 1 >= 0) {
-						if (mazeCurFloor[character.getPos().y - 1][character.getPos().z] != 1) {
-							character.moveForward();
+					//if (character.getPos().y - 1 >= 0) {
+						//if (mazeCurFloor[character.getPos().y - 1][character.getPos().z] != 1) {
+					if(Iscontains(allPossible,new Position(curFloor,character.getPos().y-1,character.getPos().z))){		
+					character.moveForward();
 							redraw();
-						}
+						//}
 					}
 					break;
 
 				case SWT.ARROW_RIGHT:
-					if (mazeCurFloor[character.getPos().y][character.getPos().z + 1] != 1) {
+					if(Iscontains(allPossible,new Position(curFloor,character.getPos().y,character.getPos().z+1))){
+					//if (mazeCurFloor[character.getPos().y][character.getPos().z + 1] != 1) {
 						// if(mazeCurFloor[character.getPos().z][character.getPos().y+1]!=1){
 
 						// flag=0;
@@ -93,7 +95,8 @@ public class MazeDisplay extends Canvas {
 					break;
 
 				case SWT.ARROW_LEFT:
-					if (mazeCurFloor[character.getPos().y][character.getPos().z - 1] != 1) {
+					if(Iscontains(allPossible,new Position(curFloor,character.getPos().y,character.getPos().z-1))){
+					//if (mazeCurFloor[character.getPos().y][character.getPos().z - 1] != 1) {
 						// flag=1;
 						character.moveLeft();
 						// character2.setPos(character.getPos());
@@ -103,30 +106,43 @@ public class MazeDisplay extends Canvas {
 					break;
 
 				case SWT.PAGE_UP:
-					if (maze.getFloor() - curFloor > 1) {
+					
+					//if (maze.getFloor() - curFloor > 1) {
 						temp = curFloor;
-						if (tempMaze[temp + 1][character.getPos().y][character.getPos().z] != 1) {
-							character.moveUp();
+						//if (tempMaze[temp + 1][character.getPos().y][character.getPos().z] != 1) {
+					if(Iscontains(allPossible,new Position(temp+1,character.getPos().y,character.getPos().z))){		
+					character.moveUp();
 							curFloor++;
 							mazeCurFloor = maze.getCrossSectionByZ(curFloor);
-						}
+						//}
 					}
 					redraw();
 					break;
 
 				case SWT.PAGE_DOWN:
-					if (curFloor > 0) {
+					//if (curFloor > 0) {
 						temp = curFloor;
-						if (tempMaze[temp - 1][character.getPos().y][character.getPos().z] != 1) {
+						if(Iscontains(allPossible,new Position(temp-1,character.getPos().y,character.getPos().z))){
+						//if (tempMaze[temp - 1][character.getPos().y][character.getPos().z] != 1) {
 							character.moveDown();
 							curFloor--;
 							mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
 						}
-					}
+				//	}
 					redraw();
 					break;
 				}
+			}
+
+			private boolean Iscontains(ArrayList<Position> allPossible, Position position) {
+				for(Position pos: allPossible){
+					
+					if((pos.getX()==position.x)&&(pos.getY()==position.y)&&(pos.getZ()==position.z))
+						return true;
+					
+				}
+				return false;
 			}
 
 			@Override
@@ -223,15 +239,18 @@ public class MazeDisplay extends Canvas {
 					@Override
 					public void run() {
 
-						if (i < sol.getSize()) {
-							where = whereToMove(sol.getStates().get(i).getPosition(),
-									sol.getStates().get(i + 1).getPosition());
+						if (i < sol.getSize()-1) {
+							
+						where=	whereToMove(character.getPos(), sol.getStates().get(i + 1).getPosition());
+							//where = whereToMove(sol.getStates().get(i).getPosition(),
+								//	sol.getStates().get(i + 1).getPosition());
 
 							int temp;
 							switch (where) {
 							case "down":
 								temp = curFloor;
 								character.moveDown();
+								
 								curFloor--;
 								mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
@@ -290,7 +309,7 @@ public class MazeDisplay extends Canvas {
 		int z = now.z - to.z;
 
 		if (x != 0) {
-			if (x == 1)
+			if (x == -1)//1
 				// return "right";
 				return "up";
 			else
@@ -298,18 +317,18 @@ public class MazeDisplay extends Canvas {
 			// return "left";
 		}
 		if (y != 0) {
-			if (y == 1)
-				return "left";
+			if (y == -1)
+				return "back";//"right";//left
 			// return "up";
 			else
-				return "right";
+				return "forward";//left;//right
 			// return "down";
 		}
 		if (z != 0) {
-			if (z == 1)
-				return "forward";
+			if (z == -1)
+				return "right";
 			else
-				return "back";
+				return "left";
 		}
 		return null;
 	}
