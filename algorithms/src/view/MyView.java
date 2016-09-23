@@ -93,12 +93,24 @@ public class MyView extends Observable implements View, Observer {
 		
 	}
 
-    @Override
-	public void update(String args) {
-		
-		setChanged();
-		notifyObservers(args);
+	@Override
+	public void getInformation(String name) {
+		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void getMaze(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+//    @Override
+//	public void update(String args) {
+//		
+//		setChanged();
+//		notifyObservers(args);
+//		
+//	}
 
 }

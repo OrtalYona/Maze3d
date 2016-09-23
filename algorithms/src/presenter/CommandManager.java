@@ -31,7 +31,25 @@ public class CommandManager {
 		commands.put("exit", new Exit());
 		commands.put("maze_ready", new MazeReadyCommand());
 		commands.put("solve_ready", new SolveReadyCommand());
+		commands.put("message", new DisplayMessage());
+		commands.put("load_ready", new LoadReadyCommand());
+		commands.put("save_ready", new SaveReadyCommand());
+		commands.put("getInformation", new getInformation());
+		commands.put("getMaze", new getMaze());
+		commands.put("getMazesNames",  new getMazesNames());
+		commands.put("loadMazes", new loadMazes());
+		commands.put("saveMazes", new saveMazes());
+		commands.put("deleteAndSave", new DeleteAndSave());
+		commands.put("setProperties", new setProperties());
+		commands.put("eraseAll", new eraseAll());
+	
 
+
+
+
+
+		
+		
 		return commands;
 		
 		}
@@ -218,6 +236,7 @@ public class CommandManager {
 		  
 		   model.CrossSection(args[0],args[1],Integer.parseInt(args[2]));
 		   view.print("Maze " + args[0] + " By " + args[1]);
+		   
 			}
 			else{
 				view.print("Invalid input");
@@ -284,5 +303,186 @@ public class CommandManager {
 		}
 		
 	}
+	
+	public class DisplayMessage implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+		
+			view.print(model.getMessage());
+			
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class LoadReadyCommand implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+			String msg = "maze is load";
+		    view.print(msg);			
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class SaveReadyCommand implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+			String msg = "maze is save";
+		    view.print(msg);			
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class getInformation implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+
+			view.getInformation(args[0]);
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class getMaze implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+
+			view.getMaze(args[1]);
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class getMazesNames implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+			
+			model.getMazesNames();
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+	}
+	
+	
+	public class loadMazes implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+
+			model.loadMazes();
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+	}
+	
+	
+	public class saveMazes implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+
+			model.saveMazes();
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+	}
+	
+	public class DeleteAndSave implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+
+			model.DeleteAndS();
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+	}
+	
+	public class setProperties implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+			model.SetProperties(args);			
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	public class eraseAll implements Command{
+
+		@Override
+		public void doCommand(String[] args) {
+			model.eraseAll();			
+		}
+
+		@Override
+		public void setArguments(String[] args) {
+			// TODO Auto-generated method stub
+			
+		}
+			}
+	
+	
 }
 

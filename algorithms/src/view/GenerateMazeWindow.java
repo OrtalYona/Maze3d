@@ -19,22 +19,22 @@ import org.eclipse.swt.widgets.Text;
 
 import presenter.Command;
 
-public class GenerateMazeWindow extends DialogWindow {//Observable{
+public class GenerateMazeWindow extends Observable{//DialogWindow {//Observable{
 	//
 	
-protected Shell shell;		
+	Shell shell;
+	
+	
 	public void start(Display display) {		
 		shell = new Shell(display);
-		
 		initWidgets();
 		shell.open();		
 	}
-	
-	private PrintWriter out;
-	private BufferedReader in;
-	View view=new MyView(out, in);
-	MazeWindow mw=new MazeWindow();
-	protected HashMap<String, Command> commands=new HashMap<String,Command>();
+	//private PrintWriter out;
+	//private BufferedReader in;
+	//View view=new MyView(out, in);
+	//MazeWindow mw=new MazeWindow();
+	//protected HashMap<String, Command> commands=new HashMap<String,Command>();
      String name=new String();
 
 	protected void initWidgets() {
@@ -88,18 +88,14 @@ protected Shell shell;
 				name=txtName.getText();
 				
 				msg.setMessage("Generating maze with floor: " + floor + " rows: " + rows + " cols: " + cols);
-				
 				msg.open();
 				shell.close();
 				
-				//String[] args= {"generate_3d_maze" ,mw.getMazeName(),"floor", "rows","cols"};
 				
-				String args= "generate_3d_maze" +" " +name+" "+floor+" " + rows +" "+cols;
-				commands.get("generate_3d_maze"); 
-				//setChanged();
-				//notifyObservers(args);
-			    view.update(args);
-			
+				//String args= "generate_3d_maze" +" " +name+" "+floor+" " + rows +" "+cols;
+				setChanged();
+				notifyObservers("generate_3d_maze" +" " +name+" "+floor+" " + rows +" "+cols);//(args);
+
 			}
 			
 			@Override

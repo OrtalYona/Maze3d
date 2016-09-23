@@ -24,12 +24,15 @@ public class Properties implements Serializable {
 	//public MazeGenerator generator;
 	//public MazeSolve solve;
 	
-	public Properties() {
+/*	public Properties(int num, String gen, String solve) {
 	
-		//this.generator=MazeGenerator.GrowingTree;
+		this.numOfThreads=num;
+		this.generateMazeAlgorithm=gen;
+		this.solveMazeAlgorithm=solve;	
+	
 	//	this.solve=MazeSolve.BFS;
 
-	}
+	}*/
 
 	public int getNumOfThreads() {
 		return numOfThreads;

@@ -48,10 +48,27 @@ public interface Model {
 	/**
 	 * display solution
 	 * @param name
-	 * @return
+	 * @return	
 	 */
 	String display_Solution(String name);
 
 	void loadMap();
 	void saveMap();
+
+	void saveMazes();
+
+	void loadMazes();
+
+	String getMessage();
+	
+	public String getMazesNames();
+
+	void DeleteAndS();
+
+	void SetProperties(String[] args);
+
+	void eraseAll();
+
+
+
 }

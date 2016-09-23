@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -41,10 +42,15 @@ public class MyModel extends Observable implements Model {
 	private Map<String, Solution<Position>> solutions = new HashMap<String, Solution<Position>>();
 	// private HashMap<String,Maze3d> maze = new HashMap<String , Maze3d>();
 
+	public ArrayList<String> mazesNames=new ArrayList<>();
+
 	private HashMap<Maze3d, Solution<Position>> mazeSolution = new HashMap<Maze3d, Solution<Position>>();
 
-	private final String file = "newFileM.zip";
+	private final String file ="newFile.zip"; //"newFileM.zip";
+	private final String fileNames ="FileNames.zip"; 
+	
 	private Properties properties;
+	String str;
 
 	// private ObjectInputStream in;
 
@@ -57,26 +63,33 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void generateMaze(String name, int floor, int rows, int cols) {
 
-		//executor.submit(new Callable<Maze3d>() {
+		executor.submit(new Callable<Maze3d>() {
 
-			//@Override
-		//	public Maze3d call() throws Exception {
+		@Override
+			public Maze3d call() throws Exception {
 				GrowingTreeGenerator generator = new GrowingTreeGenerator();
 				Maze3d maze = generator.generate(floor, rows, cols);
-				mazes.put(name, maze);
-
+				mazes.put(name, maze);//String,Maze3d
+				mazesNames.add(name);//String
+				saveMazes();
+				saveSolutions();
+				//saveMap();2 save
+				sendMazesNames(name);
 				setChanged();
 				notifyObservers("maze_ready " + name);
-			//	return maze;
+				saveMap();
+				return maze;
 
-			//}
-		//});
+			}
+});
 
 	}
 
 	@Override
 	public Maze3d getMaze(String name) {
+		saveCurrentMaze(name);
 		return mazes.get(name);
+
 	}
 
 	@Override
@@ -135,6 +148,8 @@ public class MyModel extends Observable implements Model {
 	public void exit() throws IOException {
 
 		saveMap();
+		saveMazes();
+		setChanged();
 		executor.shutdownNow();
 	}
 
@@ -148,10 +163,10 @@ public class MyModel extends Observable implements Model {
 
 			if (algorithms.toLowerCase().equals("bfs")) {
 
-				executor.submit(new Callable<Solution<Position>>() {
+			//	executor.submit(new Callable<Solution<Position>>() {
 
-					@Override
-					public Solution<Position> call() throws Exception {
+					//@Override
+					//public Solution<Position> call() throws Exception {
 
 						BFS<Position> bfs = new BFS<Position>();
 						// Solution<Position> solution1 = bfs.search(adapter);
@@ -159,30 +174,32 @@ public class MyModel extends Observable implements Model {
 						mazes.put(name, maze);
 						solutions.put(name, solution);// solution1
 						// mazeSolution.put(maze, solution);
-						return solution;
+						//return solution;
 					}
 
-				});
+				//});
 			}
 
 			else if (algorithms.toLowerCase().equals("dfs")) {
 
-				executor.submit(new Callable<Solution<Position>>() {
+			//	executor.submit(new Callable<Solution<Position>>() {
 
-					@Override
-					public Solution<Position> call() throws Exception {
+					//@Override
+				//	public Solution<Position> call() throws Exception {
 						DFS<Position> dfs = new DFS<Position>();
 						// Solution<Position> solution2 = dfs.search(adapter);
 						Solution<Position> solution = dfs.search(adapter);
 						mazes.put(name, maze);
 						solutions.put(name, solution);// 2
 						// mazeSolution.put(maze, solution);
-						return solution;
-					}
+					//	return solution;
+					//}
 
-				});
-			}
-		}
+				//});
+			//}
+	}
+
+		saveCurrentSolution(name);
 		setChanged();
 		notifyObservers("solve_ready " + name);
 
@@ -190,22 +207,47 @@ public class MyModel extends Observable implements Model {
 
 	public int[][] CrossSection(String name, String place, int section) {
 
-		Maze3d maze3d = mazes.get(name);
 
+		Maze3d maze3d = mazes.get(name);
+		StringBuilder sb = new StringBuilder();
+		int maze2d[][]=null;
+
+		 
 		switch (place) {
 		case "x":
-			return maze3d.getCrossSectionByX(section);
+			maze2d= maze3d.getCrossSectionByX(section);
+			for (int i = 0; i < maze2d.length; i++) {
+				for (int j = 0; j < maze2d[0].length; j++) {
+					sb.append((((Integer) maze2d[i][j]).toString() + " "));
+				}
+				sb.append("\n");
+			}
+				return maze2d;
 
 		case "y":
-			return maze3d.getCrossSectionByY(section);
+			maze2d=maze3d.getCrossSectionByY(section);
+			for (int i = 0; i < maze2d.length; i++) {
+				for (int j = 0; j < maze2d[0].length; j++) {
+					sb.append((((Integer) maze2d[i][j]).toString() + " "));
+				}
+				sb.append("\n");
+			}
+			return maze2d;
 
 		case "z":
-			return maze3d.getCrossSectionByZ(section);
+			maze2d=maze3d.getCrossSectionByZ(section);
+			for (int i = 0; i < maze2d.length; i++) {
+				for (int j = 0; j < maze2d[0].length; j++) {
+					sb.append((((Integer) maze2d[i][j]).toString() + " "));
+				}
+				sb.append("\n");
+			}
+			return maze2d;
 
 		default:
 			return null;
 		}
-
+		
 	}
 
 	public String display_Solution(String name) {
@@ -226,8 +268,8 @@ public class MyModel extends Observable implements Model {
 			FileOutputStream fileOut=new FileOutputStream(file);
 			 GZIPOutputStream zip=new GZIPOutputStream(fileOut);
 			 out = new ObjectOutputStream(zip);
-			 System.out.println(this.mazes);
-			 System.out.println(this.solutions);
+			 //System.out.println(this.mazes);
+			// System.out.println(this.solutions);
 			 out.writeObject(this.mazes);//mazeSolution
 			 out.writeObject(this.solutions);
 			
@@ -256,8 +298,8 @@ public class MyModel extends Observable implements Model {
 
 			this.mazes = (Map<String, Maze3d>) in.readObject();
 			this.solutions = (Map<String, Solution<Position>>) in.readObject();
-			System.out.println(this.mazes);
-			System.out.println(this.solutions);
+			//System.out.println(this.mazes);
+			//System.out.println(this.solutions);
 			in.close();
 		} catch (IOException e) {
 			e.getStackTrace();
@@ -265,5 +307,147 @@ public class MyModel extends Observable implements Model {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void saveMazes(){
+		ObjectOutputStream out=null;
+		try{
+			out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("AllMazesCatch")));//fileNames
+			out.writeObject(this.mazes);
+			//System.out.println(this.mazes);
+			out.close();
+			} catch (IOException e1) {
+				str = "save faild";
+			}
+			str="";
+	}
+	@SuppressWarnings("unchecked")
+	
+	@Override
+	public void loadMazes(){
+		ObjectInputStream in=null;
+		try{
+			
+		in = new ObjectInputStream(new GZIPInputStream(new FileInputStream("AllMazesCatch")));//fileNames
+		this.mazes=(HashMap<String, Maze3d>) in.readObject();
+		System.out.println(this.mazes);
+		in.close();
+		} catch (IOException e1) {
+			str = "load faild";
+		} catch (ClassNotFoundException e) {
+			str = "load faild- class not found";
+			e.printStackTrace();
+		}
+		str="Mazes loaded!\n";
+	}
+	@Override
+	public String getMessage() {
+		return str;
+	}
+	void sendMazesNames(String name){
+		setChanged();
+		notifyObservers("getInformation" +" "+name);
+	}
 
+	@Override
+	public String getMazesNames() {
+		String temp="";
+		for (String s : mazesNames)
+		{
+		    temp += s + " ";
+		}
+		
+		return temp;
+		}
+	
+	
+	@Override
+	public void DeleteAndS(){
+		this.mazes.clear();
+		//this.solutions.clear();
+		
+		setChanged();
+		notifyObservers("display_msg Data_erased!");
+	}
+	
+	@Override
+	public void SetProperties(String[] args){
+		
+		//properties.setGenerateMazeAlgorithm(args[0]);
+		//properties.setSolveMazeAlgorithm(args[1]);
+	
+		
+		/*	String s="bfs";
+		
+		if(args[0]=="GrowingTree")
+			properties.setGenerateMazeAlgorithm("GrowingTree");
+		else
+			properties.setGenerateMazeAlgorithm("simpleMaze");
+			
+		if(args[1]=="bfs")
+			properties.setSolveMazeAlgorithm("bfs");
+		else
+			properties.setSolveMazeAlgorithm("dfs");
+	*/	
+	}
+	
+	@Override
+	public void eraseAll(){
+	
+		this.mazes.clear();
+		this.solutions.clear();
+  }
+	public void saveSolutions(){
+		ObjectOutputStream oos=null;
+		try{
+			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("AllSolutionsCatch")));
+			oos.writeObject(this.solutions);
+			oos.close();
+			} catch (IOException e1) {
+				str = "save faild";
+			}
+	}
+		
+		
+
+	public void loadSolutions()  {
+		ObjectInputStream ois=null;
+		try{
+		 ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("AllSolutionsCatch")));
+		this.solutions=(Map<String, Solution<Position>>) ois.readObject();
+		ois.close();
+		} catch (IOException e1) {
+			str = "load faild";
+		} catch (ClassNotFoundException e) {
+			str = "load faild- class not found";
+			e.printStackTrace();
+		}
+		str="Mazes loaded!\n";
+		
+	}
+	
+	
+	public void saveCurrentMaze(String name){
+		ObjectOutputStream oos=null;
+		try{
+			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("cuurentMaze")));
+			oos.writeObject(this.mazes.get(name));
+			oos.close();
+			} catch (IOException e1) {
+			}
+}
+	
+
+	public void saveCurrentSolution(String name){
+		ObjectOutputStream oos=null;
+		try{
+			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("cuurentSolution")));
+			oos.writeObject(this.solutions.get(name));
+			oos.close();
+			} catch (IOException e1) {
+			}
+}
+	
+	
+	
 }

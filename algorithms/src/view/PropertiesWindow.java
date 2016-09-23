@@ -1,6 +1,10 @@
 package view;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Observable;
+import java.util.zip.GZIPInputStream;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,24 +14,27 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import Properties.Properties;
+import algorithms.mazeGenerators.Maze3d;
 
 
 
-public class PropertiesWindow extends Observable{//DialogWindow{
+public class PropertiesWindow extends Observable{
 	
 	protected Shell shell;	
+	Properties pro=new Properties();
+	String solve;
+	String maze;
+
+	
 	public void start(Display display) {		
 	shell = new Shell(display);	
 		initWidgets();
 		shell.open();		
 	}
-	
-	Properties pro=new Properties();
-	String solve;
-	String maze;
 	
 	protected void initWidgets() {
 		shell.setText("Properties");
@@ -57,9 +64,15 @@ public class PropertiesWindow extends Observable{//DialogWindow{
 		btnP.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		btnP.setText("Save Properties");
 		
-		Button btnR = new Button(shell, SWT.PUSH);
+	/*	Button btnR = new Button(shell, SWT.PUSH);
 		btnR.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
-		btnR.setText("Reset Properties");
+		btnR.setText("Reset Properties");*/
+		
+		Button erase=new Button(shell,SWT.PUSH);
+		erase.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+		erase.setText("Reset Properties");
+		
+	
 		
 		b1.addSelectionListener(new SelectionListener() {
 			
@@ -126,6 +139,11 @@ public class PropertiesWindow extends Observable{//DialogWindow{
 
 				pro.setGenerateMazeAlgorithm(maze);
 				pro.setSolveMazeAlgorithm(solve);
+				setChanged();
+				notifyObservers("setProperties"+" "+maze+" "+solve);
+				saveSolveName();
+				shell.close();
+				
 			}
 			
 			@Override
@@ -135,7 +153,7 @@ public class PropertiesWindow extends Observable{//DialogWindow{
 			}
 		});
 		
-		btnR.addSelectionListener(new SelectionListener() {
+	/*	btnR.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -151,7 +169,38 @@ public class PropertiesWindow extends Observable{//DialogWindow{
 				
 			}
 		});
+		*/
+		erase.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+
+				MessageBox msg = new MessageBox(shell, SWT.OK);
+				msg.setText("ERASE");
+				setChanged();
+				notifyObservers("eraseAll");
+				shell.close();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	
 		
+	}
+	void saveSolveName(){
+		ObjectInputStream ois=null;
+		try{
+		 ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("SolveMazename")));
+		this.solve=(String) ois.readObject();
+		ois.close();
+		} catch (IOException e1) {
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

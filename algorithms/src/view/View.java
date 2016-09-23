@@ -42,6 +42,11 @@ public interface View {
 	 * @param fileName
 	 */
 	void dir(String fileName);
+
+	void getInformation(String name);
+
+	public void getMaze(String name);
+
 	
 	/**
 	 * set controller
@@ -49,7 +54,7 @@ public interface View {
 	 */
 	//public void setUserCommand(Command command);
 	
-	void update(String args);//[]
+	//void update(String args);//[]
 
 	//public void update(Observable obs, Object arg);
 
