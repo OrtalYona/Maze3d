@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import Properties.Properties;
 import algorithms.demo.Maze3dSearchableAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
 import algorithms.mazeGenerators.Maze3d;
@@ -40,7 +41,7 @@ public class MyModel extends Observable implements Model {
 	private HashMap<Maze3d, Solution<Position>> mazeSolution = new HashMap<Maze3d, Solution<Position>>();
 	private final String file ="newFile.zip"; //"newFileM.zip";
 //	private final String fileNames ="FileNames.zip"; 
-//	private Properties properties;
+	private Properties properties;
 	String str;
 
 
@@ -350,8 +351,8 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void SetProperties(String[] args){
 		
-		//properties.setGenerateMazeAlgorithm(args[0]);
-		//properties.setSolveMazeAlgorithm(args[1]);
+		properties.setGenerateMazeAlgorithm(args[0]);
+		properties.setSolveMazeAlgorithm(args[1]);
 	}
 	
 	@Override

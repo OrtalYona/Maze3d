@@ -133,6 +133,7 @@ public class MazeWindow extends Observable implements Observer,View {
 		
 		mazeDisplay = new MazeDisplay(shell, SWT.BORDER);	
 		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		mazeDisplay.setFocus();
 		
 		MazeDisplayWindows mdw=new MazeDisplayWindows(mazeName);
 		mdw.addObserver(this);
