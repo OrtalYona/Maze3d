@@ -8,40 +8,41 @@ import java.util.Observer;
 
 import algorithms.mazeGenerators.Maze3d;
 
-
 public class MyView extends Observable implements View, Observer {
 
-	/**CLI */
-	
+	/** CLI */
+
 	CLI cli;
-	
-	/**out*/
+
+	/** out */
 	PrintWriter out;
-	
-	/** in*/
+
+	/** in */
 	BufferedReader in;
 
-	
-	/** C'tor
+	/**
+	 * C'tor
+	 * 
 	 * @param out
-	 * @param in*/
-	
-	public MyView(PrintWriter out,BufferedReader in) {
-		this.out=out;
-		this.in=in;
-		
+	 * @param in
+	 */
+
+	public MyView(PrintWriter out, BufferedReader in) {
+		this.out = out;
+		this.in = in;
+
 		cli = new CLI(out, in);
 		cli.addObserver(this);
 	}
 
 	@Override
 	public void notifyMazeIsReady(String name) {
-    System.out.println("Maze Is Ready");		
+		System.out.println("Maze Is Ready");
 	}
 
 	@Override
 	public void displayMaze(Maze3d maze) {
-		out.println(maze);	
+		out.println(maze);
 		out.flush();
 
 	}
@@ -57,22 +58,21 @@ public class MyView extends Observable implements View, Observer {
 		out.flush();
 
 	}
-	
+
 	@Override
 	public void dir(String fileName) {
-		
+
 		File file = new File(fileName);
 
-		if(!file.exists()){
+		if (!file.exists()) {
 			out.println("No have file or directory");
-		}
-		else{
+		} else {
 			File[] list = file.listFiles();
 			for (File f : list) {
 				if (f.isFile()) {
 					out.println(f.getName());
 				}
-				if(f.isDirectory()){
+				if (f.isDirectory()) {
 					out.println(f.getName());
 				}
 			}
@@ -81,7 +81,7 @@ public class MyView extends Observable implements View, Observer {
 
 	@Override
 	public void notifySolutionIsReady(String name) {
-	    System.out.println("Solution for " + name + " Is Ready");			
+		System.out.println("Solution for " + name + " Is Ready");
 	}
 
 	@Override
@@ -90,19 +90,19 @@ public class MyView extends Observable implements View, Observer {
 			setChanged();
 			notifyObservers(arg);
 		}
-		
+
 	}
 
 	@Override
 	public void getInformation(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void getMaze(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

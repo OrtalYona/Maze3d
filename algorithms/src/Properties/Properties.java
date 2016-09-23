@@ -1,11 +1,11 @@
 package Properties;
 
-
 import java.io.Serializable;
 
 /**
  * class properties
- * @author 
+ * 
+ * @author
  *
  */
 public class Properties implements Serializable {
@@ -15,19 +15,20 @@ public class Properties implements Serializable {
 	private int numOfThreads;
 	private String generateMazeAlgorithm;
 	private String solveMazeAlgorithm;
-	
 
-	public enum MazeGenerator{
-		SimpleMaze,GrowingTree
+	public enum MazeGenerator {
+		SimpleMaze, GrowingTree
 	}
-	
-	public enum MazeSolve{
-		BFS,DFS
+
+	public enum MazeSolve {
+		BFS, DFS
 	}
-/**
- * setters and getters
- * @return
- */
+
+	/**
+	 * setters and getters
+	 * 
+	 * @return
+	 */
 	public int getNumOfThreads() {
 		return numOfThreads;
 	}
@@ -53,17 +54,14 @@ public class Properties implements Serializable {
 	}
 }
 
-//XMLEncoder xmlEncoder;
-/*		try {
-			xmlEncoder=new XMLEncoder(new BufferedOutputStream(new FileOutputStream("test.xml")));
-			xmlEncoder.flush(); 
-			xmlEncoder.writeObject(xmlEncoder); //???
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-
-		finally{ 
-		xmlEncoder.close(); 
-		} */
+// XMLEncoder xmlEncoder;
+/*
+ * try { xmlEncoder=new XMLEncoder(new BufferedOutputStream(new
+ * FileOutputStream("test.xml"))); xmlEncoder.flush();
+ * xmlEncoder.writeObject(xmlEncoder); //???
+ * 
+ * } catch (FileNotFoundException e) { // TODO Auto-generated catch block
+ * e.printStackTrace(); }
+ * 
+ * finally{ xmlEncoder.close(); }
+ */

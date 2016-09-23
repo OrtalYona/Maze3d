@@ -1,9 +1,12 @@
 package presenter;
 
+/**
+ * interface Command
+ *
+ */
 public interface Command {
 
-	
-	/**Do command */
+	/** Do command */
 	public void doCommand(String[] args);
-	
+
 }

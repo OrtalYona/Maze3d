@@ -1,16 +1,22 @@
 package view;
-
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
 import algorithms.mazeGenerators.Position;
 
-public class Character {
+/**
+ * Goal image and position
+ * 
+ * @author
+ *
+ */
+public class WinGoal {
+
 	private Position pos;
 	private Image img;
 
-	public Character() {
-		img = new Image(null, "images/start.png");
+	public WinGoal() {
+		img = new Image(null, "images/startC.jpg");
 	}
 
 	public Position getPos() {
@@ -23,37 +29,8 @@ public class Character {
 
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, cellWidth * pos.z, cellHeight * pos.y,
-				cellWidth, cellHeight);
-
-	}
-	
-	/**
-	 * move 
-	 */
-
-	public void moveRight() {
-		pos.z++;
-
-	}
-
-	public void moveForward() {
-		pos.y--;
-	}
-
-	public void moveBack() {
-		pos.y++;
-	}
-
-	public void moveLeft() {
-		pos.z--;
-	}
-
-	public void moveDown() {
-		pos.x--;
-	}
-
-	public void moveUp() {
-		pos.x++;
+				cellWidth, cellHeight);// x y
 	}
 
 }
+
