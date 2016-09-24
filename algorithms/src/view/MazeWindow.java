@@ -58,7 +58,7 @@ public class MazeWindow extends Observable implements Observer, View {
 		this.in = in;
 		this.out = out;
 		this.pro = pro;
-		loadMazes();
+		loadMazes();///////////////////////////////////////////////////////testttt
 	}
 
 	public void start() {
@@ -100,7 +100,7 @@ public class MazeWindow extends Observable implements Observer, View {
 				win.start(display);
 				setChanged();
 
-				notifyObservers("loadMazes");//<----------------------------------
+				//notifyObservers("loadMazes");//<----------------------------------
 			}
 
 			@Override
@@ -154,7 +154,7 @@ public class MazeWindow extends Observable implements Observer, View {
 			public void widgetSelected(SelectionEvent arg0) {
 
 				setChanged();
-				loadCurrentMaze();////////////////////////
+				//loadCurrentMaze();////////////////////////
 			
 				if (!(mazeDisplay.character.getPos().x == maze.getStartPosition().x
 						&& mazeDisplay.character.getPos().y == maze.getStartPosition().y
