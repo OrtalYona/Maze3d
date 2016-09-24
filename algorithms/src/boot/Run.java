@@ -15,7 +15,7 @@ public class Run {
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
-		Properties p = new Properties();
+		Properties p = new Properties(1,1,50);
 		MyModel m = new MyModel();
 		MazeWindow win = new MazeWindow(in, out, p);
 		Presenter pre = new Presenter(win, m);

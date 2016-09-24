@@ -29,7 +29,7 @@ import algorithms.search.Solution;
  */
 public class MazeDisplay extends Canvas {
 
-	private Character character;
+	public Character character;
 	private int[][] mazeCurFloor;
 	private Goal goal;
 	private WinGoal wGoal;;
@@ -40,8 +40,12 @@ public class MazeDisplay extends Canvas {
 
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
-		loadCurrentMaze();
+		loadCurrentMaze();/////////////////////////////////////////////////////////
 		tempMaze = maze.getMaze();
+		
+		
+		System.out.println(tempMaze);
+		
 		curFloor = maze.getStartPosition().x;
 		mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
@@ -58,6 +62,7 @@ public class MazeDisplay extends Canvas {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
+				
 				int temp;
 				ArrayList<Position> allPossible = maze.getPossibleMoves(character.getPos());
 				switch (e.keyCode) {
@@ -160,14 +165,15 @@ public class MazeDisplay extends Canvas {
 			}
 		});
 
-		this.addPaintListener(new PaintListener() {
+		this.addPaintListener(new PaintListener() {//<--------------------
 
 			@Override
 			public void paintControl(PaintEvent e) {
 
-				e.gc.setBackground(new Color(null, 0, 0, 0));
-				e.gc.setForeground(new Color(null, 255, 255, 255));
-
+				e.gc.setBackground(new Color(null, 0, 0, 0));//////////////////////////////
+				e.gc.setForeground(new Color(null, 255, 255, 255));////////////////////////
+				
+				
 				int width = getSize().x;
 				int height = getSize().y;
 
@@ -202,7 +208,7 @@ public class MazeDisplay extends Canvas {
 						"floor: " + curFloor + "  row: " + character.getPos().y + "  col: " + character.getPos().z, 5,
 						5, false);
 			}
-		});
+		});//<---------------------------
 	}
 
 	public void setMazeData(Maze3d md) {
@@ -222,7 +228,8 @@ public class MazeDisplay extends Canvas {
 	public void loadCurrentMaze() {
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));//cuurentMaze
+			String x= (String) ois.readObject();
 			this.maze = (Maze3d) ois.readObject();
 			ois.close();
 		} catch (IOException e1) {
@@ -240,13 +247,18 @@ public class MazeDisplay extends Canvas {
 		this.sol = t;
 	}
 
-	void goToTheGoal() {
+	void goToTheGoal(int num) {
 
+		int k=0;
+		
 		TimerTask task = new TimerTask() {
 
 			String where;
 
 			int i = 0;
+			
+			int loops = sol.getSize() - 1;
+
 
 			@Override
 			public void run() {
@@ -254,12 +266,15 @@ public class MazeDisplay extends Canvas {
 					@Override
 					public void run() {
 
-						if (i < sol.getSize() - 1) {
+						if(num==0){
+							loops=1;
+						}
+						
+						
+						if (i < loops) {
 
-							where = whereToMove(character.getPos(), sol.getStates().get(i + 1).getPosition());
-							// where =
-							// whereToMove(sol.getStates().get(i).getPosition(),sol.getStates().get(i
-							// + 1).getPosition());
+							//where = whereToMove(character.getPos(), sol.getStates().get(i + 1).getPosition());
+							 where = whereToMove(sol.getStates().get(i).getPosition(),sol.getStates().get(i + 1).getPosition());
 
 							int temp;
 							switch (where) {

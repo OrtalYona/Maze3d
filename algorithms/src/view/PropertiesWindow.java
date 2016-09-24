@@ -137,11 +137,9 @@ public class PropertiesWindow extends Observable {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 
-				pro.setGenerateMazeAlgorithm(maze);
-				pro.setSolveMazeAlgorithm(solve);
 				setChanged();
 				notifyObservers("setProperties" + " " + maze + " " + solve);
-				saveSolveName();
+				//saveSolveName();
 				shell.close();
 
 			}

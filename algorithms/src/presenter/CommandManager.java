@@ -155,17 +155,26 @@ public class CommandManager {
 		@Override
 		public void doCommand(String[] args) {
 
-			if (args.length == 2) {
+			if (args.length == 3){
+				
+				String name=args[0];
+				
+				String algorithm=args[1];
+				
+				model.solve(name,algorithm,args[2]);
+			}
+			
+			else if (args.length == 2) {
 
 				String name = args[0];
 				
 				String algorithm = args[1];
 
 				try {
-					model.solve(name, algorithm);
+					model.solve(name, algorithm,"same");//args[2]
 
 				} catch (ArrayIndexOutOfBoundsException e) {
-					model.solve(name, algorithm);
+					model.solve(name, algorithm,args[2]);
 
 				}
 

@@ -57,8 +57,6 @@ public class MazeDisplayWindows extends Observable {
 		Label lblname = new Label(shell, SWT.NONE);
 		lblname.setText("choose maze: ");
 		
-		
-		
 		String[] items=getNames();
 		Combo combo =new Combo(shell,SWT.SINGLE|SWT.DROP_DOWN);
 		combo.setItems(items);
@@ -77,6 +75,7 @@ public class MazeDisplayWindows extends Observable {
 				setChanged();
 				notifyObservers("display_maze"+" "+args);
 				shell.close();
+				
 			}
 
 			@Override

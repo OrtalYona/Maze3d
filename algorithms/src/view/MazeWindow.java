@@ -45,12 +45,13 @@ public class MazeWindow extends Observable implements Observer, View {
 	private MazeDisplay mazeDisplay;
 	protected HashMap<String, Command> commands = new HashMap<String, Command>();
 	ArrayList<String> mazeName = new ArrayList<String>();
-	String name = new String();
+	String name;//new
 	private BufferedReader in;
 	private PrintWriter out;
 	Properties pro = new Properties();
 	public Maze3d maze;
-	String solveName = new String();
+	String solveName;//new
+
 	public Solution<Position> solution = new Solution<Position>();
 
 	public MazeWindow(BufferedReader in, PrintWriter out, Properties pro) {
@@ -99,7 +100,7 @@ public class MazeWindow extends Observable implements Observer, View {
 				win.start(display);
 				setChanged();
 
-				// notifyObservers("loadMazes");<----------------------------------
+				notifyObservers("loadMazes");//<----------------------------------
 			}
 
 			@Override
@@ -114,16 +115,9 @@ public class MazeWindow extends Observable implements Observer, View {
 		Button btnDisplayMaze = new Button(buttons, SWT.PUSH);
 		btnDisplayMaze.setText("Display maze");
 
-		/*
-		 * Button btnSaveMaze = new Button(buttons ,SWT.PUSH);
-		 * btnSaveMaze.setText("Save maze");
-		 * 
-		 * Button btnLoadMaze = new Button (buttons ,SWT.PUSH);
-		 * btnLoadMaze.setText("Load maze");
-		 * 
-		 * Button btnHint = new Button (buttons ,SWT.PUSH);
-		 * btnHint.setText("Hint");
-		 */
+		  Button btnHint = new Button (buttons ,SWT.PUSH);
+		  btnHint.setText("Hint");
+		 
 
 		Button btnProperties = new Button(buttons, SWT.PUSH);
 		btnProperties.setText("Properties");
@@ -148,7 +142,6 @@ public class MazeWindow extends Observable implements Observer, View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -161,11 +154,36 @@ public class MazeWindow extends Observable implements Observer, View {
 			public void widgetSelected(SelectionEvent arg0) {
 
 				setChanged();
-				notifyObservers("solve newMazeA bfs");// +solveName);
+				loadCurrentMaze();////////////////////////
+			
+				if (!(mazeDisplay.character.getPos().x == maze.getStartPosition().x
+						&& mazeDisplay.character.getPos().y == maze.getStartPosition().y
+						&& mazeDisplay.character.getPos().z == maze.getStartPosition().z)) {
+					
+					System.out.println("start!=charcterPlace");
+					
+					if (pro.getSolveAlgorithm() == 1)
+						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs" + " " + mazeDisplay.character.getPos().x
+								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
+					else
+						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs" + " " + mazeDisplay.character.getPos().x
+								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
+
+				}
+
+				else {
+					if (pro.getSolveAlgorithm() == 1)
+						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs");
+					else
+						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs");
+
+				}
+				//notifyObservers("solve newMazeA bfs");
+				//TODO fix the name and the algorithm
 
 				loadCurrentSolution();
 				mazeDisplay.setSolution(solution);
-				mazeDisplay.goToTheGoal();
+				mazeDisplay.goToTheGoal(1);
 			}
 
 			@Override
@@ -183,7 +201,6 @@ public class MazeWindow extends Observable implements Observer, View {
 		 * notifyObservers("save_maze"+" "+name);//(args); }
 		 * 
 		 * @Override public void widgetDefaultSelected(SelectionEvent arg0) { //
-		 * TODO Auto-generated method stub
 		 * 
 		 * } });
 		 * 
@@ -218,21 +235,51 @@ public class MazeWindow extends Observable implements Observer, View {
 
 		});
 
-		/*
-		 * btnHint.addSelectionListener(new SelectionListener() {
-		 * 
-		 * @Override public void widgetSelected(SelectionEvent arg0) {
-		 * 
-		 * loadCurrentSolution();
-		 * 
-		 * 
-		 * }
-		 * 
-		 * @Override public void widgetDefaultSelected(SelectionEvent arg0) { //
-		 * TODO Auto-generated method stub
-		 * 
-		 * } });
+		/**
+		 * Hint
 		 */
+		  btnHint.addSelectionListener(new SelectionListener() {
+		  
+		  @Override 
+		  public void widgetSelected(SelectionEvent arg0) {
+				setChanged();
+				loadCurrentMaze();
+
+				if (!(mazeDisplay.character.getPos().x == maze.getStartPosition().x
+						&& mazeDisplay.character.getPos().y == maze.getStartPosition().y
+						&& mazeDisplay.character.getPos().z == maze.getStartPosition().z)) {
+					System.out.println("start!=charcterPlace");
+					if (pro.getSolveAlgorithm() == 1)
+						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs" + " " + mazeDisplay.character.getPos().x
+								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
+					else
+						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs" + " " + mazeDisplay.character.getPos().x
+								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
+
+				}
+
+				else {
+					if (pro.getSolveAlgorithm() == 1)
+						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs");
+					else
+						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs");
+
+				}
+
+				loadCurrentSolution();
+				mazeDisplay.setSolution(solution);
+				mazeDisplay.goToTheGoal(0);
+
+			
+		 // loadCurrentSolution();
+		  
+		  
+		  }
+		  
+		  @Override public void widgetDefaultSelected(SelectionEvent arg0) { //
+		  
+		  } });
+		 
 		/**
 		 * exit
 		 */
@@ -257,7 +304,6 @@ public class MazeWindow extends Observable implements Observer, View {
 
 	@Override
 	public void notifyMazeIsReady(String name) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -287,7 +333,6 @@ public class MazeWindow extends Observable implements Observer, View {
 
 	@Override
 	public void getMaze(String name) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -350,7 +395,8 @@ public class MazeWindow extends Observable implements Observer, View {
 	public void loadCurrentMaze() {
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));//cuurentMaze
+			this.name = (String) ois.readObject();
 			this.maze = (Maze3d) ois.readObject();
 			ois.close();
 		} catch (IOException e1) {

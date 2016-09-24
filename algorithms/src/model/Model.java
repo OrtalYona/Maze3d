@@ -44,7 +44,7 @@ public interface Model {
 	 * @param name
 	 * @param algorithms
 	 */
-	void solve(String name, String algorithms);
+	void solve(String name, String algorithms, String pos);
 
 	/**
 	 * get maze

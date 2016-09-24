@@ -65,6 +65,7 @@ public class MyModel extends Observable implements Model {
 				saveMazes();
 				saveSolutions();
 				sendMazesNames(name);
+				saveCurrentMaze(name);
 				setChanged();
 				notifyObservers("maze_ready " + name);
 				saveMap();
@@ -144,12 +145,28 @@ public class MyModel extends Observable implements Model {
 	}
 
 	@Override
-	public void solve(String name, String algorithms) {
+	public void solve(String name, String algorithms,String pos) {
 
 		Maze3d maze = mazes.get(name);
+
+		//Maze3d newMaze = mazes.get(name);
+		boolean changed=false;
+		if (pos != "same") {
+			Maze3d temp2 =mazes.get(name);
+			String[] p = pos.split("_");
+			temp2.setStartPosition(new Position(Integer.parseInt(p[0]), Integer.parseInt(p[1]), Integer.parseInt(p[2])));
+			maze = temp2;
+			changed=true;
+		} 
+		
+		//Maze3d maze = mazes.get(name);
+		
+		if(maze!=null){
+			
+		
 		Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
 
-		if (!mazeSolution.containsKey(maze)) {// Value?
+		if (!mazeSolution.containsKey(maze)) {
 
 			if (algorithms.toLowerCase().equals("bfs")) {
 
@@ -192,7 +209,7 @@ public class MyModel extends Observable implements Model {
 		saveCurrentSolution(name);
 		setChanged();
 		notifyObservers("solve_ready " + name);
-
+		}
 	}
 
 	public int[][] CrossSection(String name, String place, int section) {
@@ -349,9 +366,16 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public void SetProperties(String[] args) {
+	
+		if (args[1] == "GrowingTree")
+			properties.setMazeGenerator(1);
+		else
+			properties.setMazeGenerator(0);
 
-		// properties.setGenerateMazeAlgorithm(args[0]);
-		// properties.setSolveMazeAlgorithm(args[1]);
+		if (args[2] == "BFS")
+			properties.setMazeGenerator(1);
+		else
+			properties.setMazeGenerator(0);
 	}
 
 	@Override
@@ -391,7 +415,8 @@ public class MyModel extends Observable implements Model {
 	public void saveCurrentMaze(String name) {
 		ObjectOutputStream oos = null;
 		try {
-			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("cuurentMaze")));
+			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("cuurentMaze")));//cuurentMaze
+			oos.writeObject(name);
 			oos.writeObject(this.mazes.get(name));
 			oos.close();
 		} catch (IOException e1) {
@@ -408,4 +433,6 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e1) {
 		}
 	}
+
+
 }

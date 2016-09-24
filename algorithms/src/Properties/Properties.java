@@ -12,9 +12,15 @@ public class Properties implements Serializable {
 
 	/***/
 	private static final long serialVersionUID = 1L;
+	
+	private int mazeGenerator;
+	private int solveAlgorithm;
 	private int numOfThreads;
-	private String generateMazeAlgorithm;
-	private String solveMazeAlgorithm;
+	
+
+
+	//private String generateMazeAlgorithm;
+	//private String solveMazeAlgorithm;
 
 	public enum MazeGenerator {
 		SimpleMaze, GrowingTree
@@ -22,6 +28,21 @@ public class Properties implements Serializable {
 
 	public enum MazeSolve {
 		BFS, DFS
+	}
+	
+	
+	public Properties() {
+		mazeGenerator = 1;
+		solveAlgorithm = 1;
+		numOfThreads=50;
+       
+	}
+	
+	public Properties(int maze, int solveAlgorithm,int num){
+		
+		this.mazeGenerator=maze;
+		this.solveAlgorithm=solveAlgorithm;
+		this.numOfThreads=num;	
 	}
 
 	/**
@@ -33,25 +54,41 @@ public class Properties implements Serializable {
 		return numOfThreads;
 	}
 
+	public int getMazeGenerator() {
+		return mazeGenerator;
+	}
+
+	public void setMazeGenerator(int mazeGenerator) {
+		this.mazeGenerator = mazeGenerator;
+	}
+
+	public int getSolveAlgorithm() {
+		return solveAlgorithm;
+	}
+
+	public void setSolveAlgorithm(int solveAlgorithm) {
+		this.solveAlgorithm = solveAlgorithm;
+	}
+
 	public void setNumOfThreads(int numOfThreads) {
 		this.numOfThreads = numOfThreads;
 	}
 
-	public String getGenerateMazeAlgorithm() {
-		return generateMazeAlgorithm;
-	}
-
-	public void setGenerateMazeAlgorithm(String generateMazeAlgorithm) {
-		this.generateMazeAlgorithm = generateMazeAlgorithm;
-	}
-
-	public String getSolveMazeAlgorithm() {
-		return solveMazeAlgorithm;
-	}
-
-	public void setSolveMazeAlgorithm(String solveMazeAlgorithm) {
-		this.solveMazeAlgorithm = solveMazeAlgorithm;
-	}
+//	public String getGenerateMazeAlgorithm() {
+//		return generateMazeAlgorithm;
+//	}
+//
+//	public void setGenerateMazeAlgorithm(String generateMazeAlgorithm) {
+//		this.generateMazeAlgorithm = generateMazeAlgorithm;
+//	}
+//
+//	public String getSolveMazeAlgorithm() {
+//		return solveMazeAlgorithm;
+//	}
+//
+//	public void setSolveMazeAlgorithm(String solveMazeAlgorithm) {
+//		this.solveMazeAlgorithm = solveMazeAlgorithm;
+//	}
 }
 
 // XMLEncoder xmlEncoder;
