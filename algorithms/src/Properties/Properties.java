@@ -74,21 +74,6 @@ public class Properties implements Serializable {
 		this.numOfThreads = numOfThreads;
 	}
 
-//	public String getGenerateMazeAlgorithm() {
-//		return generateMazeAlgorithm;
-//	}
-//
-//	public void setGenerateMazeAlgorithm(String generateMazeAlgorithm) {
-//		this.generateMazeAlgorithm = generateMazeAlgorithm;
-//	}
-//
-//	public String getSolveMazeAlgorithm() {
-//		return solveMazeAlgorithm;
-//	}
-//
-//	public void setSolveMazeAlgorithm(String solveMazeAlgorithm) {
-//		this.solveMazeAlgorithm = solveMazeAlgorithm;
-//	}
 }
 
 // XMLEncoder xmlEncoder;

@@ -29,7 +29,7 @@ public class WinGoal {
 
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, cellWidth * pos.z, cellHeight * pos.y,
-				cellWidth, cellHeight);// x y
+				cellWidth, cellHeight);
 	}
 
 }

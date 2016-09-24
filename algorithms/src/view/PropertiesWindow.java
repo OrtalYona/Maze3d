@@ -64,11 +64,6 @@ public class PropertiesWindow extends Observable {
 		btnP.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		btnP.setText("Save Properties");
 
-		/*
-		 * Button btnR = new Button(shell, SWT.PUSH); btnR.setLayoutData(new
-		 * GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
-		 * btnR.setText("Reset Properties");
-		 */
 
 		Button erase = new Button(shell, SWT.PUSH);
 		erase.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
@@ -151,20 +146,6 @@ public class PropertiesWindow extends Observable {
 			}
 		});
 
-		/*
-		 * btnR.addSelectionListener(new SelectionListener() {
-		 * 
-		 * @Override public void widgetSelected(SelectionEvent arg0) {
-		 * 
-		 * pro.setGenerateMazeAlgorithm(null); pro.setSolveMazeAlgorithm(null);
-		 * 
-		 * }
-		 * 
-		 * @Override public void widgetDefaultSelected(SelectionEvent arg0) { //
-		 * TODO Auto-generated method stub
-		 * 
-		 * } });
-		 */
 		erase.addSelectionListener(new SelectionListener() {
 
 			@Override

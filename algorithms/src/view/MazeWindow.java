@@ -43,22 +43,21 @@ public class MazeWindow extends Observable implements Observer, View {
 	protected Shell shell;
 	protected Display display;
 	private MazeDisplay mazeDisplay;
+	public Maze3d maze;
+	Properties pro = new Properties();
 	protected HashMap<String, Command> commands = new HashMap<String, Command>();
+	public Solution<Position> solution = new Solution<Position>();
 	ArrayList<String> mazeName = new ArrayList<String>();
-	String name;//new
+	String name;
+	String solveName;
 	private BufferedReader in;
 	private PrintWriter out;
-	Properties pro = new Properties();
-	public Maze3d maze;
-	String solveName;//new
-
-	public Solution<Position> solution = new Solution<Position>();
 
 	public MazeWindow(BufferedReader in, PrintWriter out, Properties pro) {
 		this.in = in;
 		this.out = out;
 		this.pro = pro;
-		loadMazes();///////////////////////////////////////////////////////testttt
+		loadMazes();
 	}
 
 	public void start() {
@@ -100,7 +99,7 @@ public class MazeWindow extends Observable implements Observer, View {
 				win.start(display);
 				setChanged();
 
-				//notifyObservers("loadMazes");//<----------------------------------
+				// notifyObservers("loadMazes");//<----------------------------------
 			}
 
 			@Override
@@ -115,9 +114,8 @@ public class MazeWindow extends Observable implements Observer, View {
 		Button btnDisplayMaze = new Button(buttons, SWT.PUSH);
 		btnDisplayMaze.setText("Display maze");
 
-		  Button btnHint = new Button (buttons ,SWT.PUSH);
-		  btnHint.setText("Hint");
-		 
+		Button btnHint = new Button(buttons, SWT.PUSH);
+		btnHint.setText("Hint");
 
 		Button btnProperties = new Button(buttons, SWT.PUSH);
 		btnProperties.setText("Properties");
@@ -154,32 +152,32 @@ public class MazeWindow extends Observable implements Observer, View {
 			public void widgetSelected(SelectionEvent arg0) {
 
 				setChanged();
-				//loadCurrentMaze();////////////////////////
-			
+				loadCurrentMaze();////////////////////////
+
 				if (!(mazeDisplay.character.getPos().x == maze.getStartPosition().x
 						&& mazeDisplay.character.getPos().y == maze.getStartPosition().y
 						&& mazeDisplay.character.getPos().z == maze.getStartPosition().z)) {
-					
+
 					System.out.println("start!=charcterPlace");
-					
+
 					if (pro.getSolveAlgorithm() == 1)
-						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs" + " " + mazeDisplay.character.getPos().x
+						notifyObservers("solve" + " " + name + " " + "bfs" + " " + mazeDisplay.character.getPos().x
 								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
 					else
-						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs" + " " + mazeDisplay.character.getPos().x
+						notifyObservers("solve" + " " + name + " " + "dfs" + " " + mazeDisplay.character.getPos().x
 								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
 
 				}
 
 				else {
 					if (pro.getSolveAlgorithm() == 1)
-						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs");
+						notifyObservers("solve" + " " + name + " " + "bfs");
 					else
-						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs");
+						notifyObservers("solve" + " " + name + " " + "dfs");
 
 				}
-				//notifyObservers("solve newMazeA bfs");
-				//TODO fix the name and the algorithm
+				// notifyObservers("solve newMazeA bfs");
+				// TODO fix the name and the algorithm
 
 				loadCurrentSolution();
 				mazeDisplay.setSolution(solution);
@@ -192,30 +190,6 @@ public class MazeWindow extends Observable implements Observer, View {
 			}
 		});
 
-		/*
-		 * btnSaveMaze.addSelectionListener(new SelectionListener() {
-		 * 
-		 * @Override public void widgetSelected(SelectionEvent arg0) {
-		 * 
-		 * // String args="save_maze"+" "+mazeName; setChanged();
-		 * notifyObservers("save_maze"+" "+name);//(args); }
-		 * 
-		 * @Override public void widgetDefaultSelected(SelectionEvent arg0) { //
-		 * 
-		 * } });
-		 * 
-		 * btnLoadMaze.addSelectionListener(new SelectionListener() {
-		 * 
-		 * @Override public void widgetSelected(SelectionEvent arg0) {
-		 * 
-		 * //String args="load_maze"+" "+mazeName; setChanged();
-		 * notifyObservers("load_maze"+" "+name); }
-		 * 
-		 * @Override public void widgetDefaultSelected(SelectionEvent arg0) {
-		 * 
-		 * 
-		 * } });
-		 */
 		/**
 		 * properties
 		 */
@@ -238,10 +212,10 @@ public class MazeWindow extends Observable implements Observer, View {
 		/**
 		 * Hint
 		 */
-		  btnHint.addSelectionListener(new SelectionListener() {
-		  
-		  @Override 
-		  public void widgetSelected(SelectionEvent arg0) {
+		btnHint.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
 				setChanged();
 				loadCurrentMaze();
 
@@ -250,19 +224,19 @@ public class MazeWindow extends Observable implements Observer, View {
 						&& mazeDisplay.character.getPos().z == maze.getStartPosition().z)) {
 					System.out.println("start!=charcterPlace");
 					if (pro.getSolveAlgorithm() == 1)
-						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs" + " " + mazeDisplay.character.getPos().x
+						notifyObservers("solve" + " " + name + " " + "bfs" + " " + mazeDisplay.character.getPos().x
 								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
 					else
-						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs" + " " + mazeDisplay.character.getPos().x
+						notifyObservers("solve" + " " + name + " " + "dfs" + " " + mazeDisplay.character.getPos().x
 								+ "_" + mazeDisplay.character.getPos().y + "_" + mazeDisplay.character.getPos().z);
 
 				}
 
 				else {
 					if (pro.getSolveAlgorithm() == 1)
-						notifyObservers("solve" + " " + "newMazeA" + " " + "bfs");
+						notifyObservers("solve" + " " + name + " " + "bfs");
 					else
-						notifyObservers("solve" + " " + "newMazeA" + " " + "dfs");
+						notifyObservers("solve" + " " + name + " " + "dfs");
 
 				}
 
@@ -270,16 +244,16 @@ public class MazeWindow extends Observable implements Observer, View {
 				mazeDisplay.setSolution(solution);
 				mazeDisplay.goToTheGoal(0);
 
-			
-		 // loadCurrentSolution();
-		  
-		  
-		  }
-		  
-		  @Override public void widgetDefaultSelected(SelectionEvent arg0) { //
-		  
-		  } });
-		 
+				// loadCurrentSolution();
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) { //
+
+			}
+		});
+
 		/**
 		 * exit
 		 */
@@ -395,7 +369,7 @@ public class MazeWindow extends Observable implements Observer, View {
 	public void loadCurrentMaze() {
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));//cuurentMaze
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));// cuurentMaze
 			this.name = (String) ois.readObject();
 			this.maze = (Maze3d) ois.readObject();
 			ois.close();
