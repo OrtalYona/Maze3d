@@ -78,28 +78,34 @@ public class MazeWindow extends Observable implements Observer, View {
 	}
 
 	protected void initWidgets() {
-
-		GridLayout grid = new GridLayout(2, false);
+		
+		GridLayout grid = new GridLayout(2, false);//false
 		shell.setLayout(grid);
 
 		Composite buttons = new Composite(shell, SWT.NONE);
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		buttons.setLayout(rowLayout);
+		shell.setText("Help Cinderella find her prince");
+
+		mazeDisplay = new MazeDisplay(shell, SWT.BORDER);
+		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		mazeDisplay.setFocus();
+		
+		
 		/**
 		 * Generate_3d_maze
 		 */
 		GenerateMazeWindow win = new GenerateMazeWindow();
 		win.addObserver(this);
 		Button btnGenerateMaze = new Button(buttons, SWT.PUSH);
-		btnGenerateMaze.setText("Start maze");
+		btnGenerateMaze.setText("New maze ");
+		
 		btnGenerateMaze.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				win.start(display);
 				setChanged();
-
-				// notifyObservers("loadMazes");//<----------------------------------
 			}
 
 			@Override
@@ -108,14 +114,27 @@ public class MazeWindow extends Observable implements Observer, View {
 			}
 		});
 
+		
+		
+		
+		
+		
+	
+		
+		Button btnDisplayMaze = new Button(buttons, SWT.PUSH);
+		btnDisplayMaze.setText("Load maze");
+		
+		Button btnStartGame = new Button(buttons, SWT.PUSH);
+		btnStartGame.setText("Start Game");
+		
+		
 		Button btnSolveMaze = new Button(buttons, SWT.PUSH);
 		btnSolveMaze.setText("Solve maze");
 
-		Button btnDisplayMaze = new Button(buttons, SWT.PUSH);
-		btnDisplayMaze.setText("Display maze");
+		
 
 		Button btnHint = new Button(buttons, SWT.PUSH);
-		btnHint.setText("Hint");
+		btnHint.setText("Hint           ");
 
 		Button btnProperties = new Button(buttons, SWT.PUSH);
 		btnProperties.setText("Properties");
@@ -123,9 +142,6 @@ public class MazeWindow extends Observable implements Observer, View {
 		Button btnE = new Button(buttons, SWT.PUSH);
 		btnE.setText("Exit");
 
-		mazeDisplay = new MazeDisplay(shell, SWT.BORDER);
-		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		mazeDisplay.setFocus();
 
 		MazeDisplayWindows mdw = new MazeDisplayWindows(mazeName);
 		mdw.addObserver(this);
@@ -133,14 +149,31 @@ public class MazeWindow extends Observable implements Observer, View {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				saveMazes();
+			
 				mdw.start(display);
-				mazeDisplay.setMazeData(maze);
+		
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 
+			}
+		});
+		
+		
+		
+		btnStartGame.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+
+					loadCurrentMaze();
+					mazeDisplay.setMazeData(name, maze);///new
+					mazeDisplay.redraw();
+					mazeDisplay.setFocus();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
 
@@ -152,7 +185,7 @@ public class MazeWindow extends Observable implements Observer, View {
 			public void widgetSelected(SelectionEvent arg0) {
 
 				setChanged();
-				loadCurrentMaze();////////////////////////
+				loadCurrentMaze();
 
 				if (!(mazeDisplay.character.getPos().x == maze.getStartPosition().x
 						&& mazeDisplay.character.getPos().y == maze.getStartPosition().y
@@ -176,8 +209,7 @@ public class MazeWindow extends Observable implements Observer, View {
 						notifyObservers("solve" + " " + name + " " + "dfs");
 
 				}
-				// notifyObservers("solve newMazeA bfs");
-				// TODO fix the name and the algorithm
+				
 
 				loadCurrentSolution();
 				mazeDisplay.setSolution(solution);
@@ -243,9 +275,6 @@ public class MazeWindow extends Observable implements Observer, View {
 				loadCurrentSolution();
 				mazeDisplay.setSolution(solution);
 				mazeDisplay.goToTheGoal(0);
-
-				// loadCurrentSolution();
-
 			}
 
 			@Override
@@ -261,10 +290,13 @@ public class MazeWindow extends Observable implements Observer, View {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				
 				saveMazes();
 				setChanged();
 				notifyObservers("exit");
-				display.dispose();
+				System.exit(0);
+
+//				display.dispose();
 
 			}
 

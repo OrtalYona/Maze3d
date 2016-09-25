@@ -37,17 +37,22 @@ public class MazeDisplay extends Canvas {
 	Maze3d maze;
 	int[][][] tempMaze;
 	int curFloor;
+	String mazeName;
+	Position tempPos;
 
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
-		loadCurrentMaze();
+		//
+		loadCurrentMaze();//delete
+		
+		if(maze!=null){
+			
 		tempMaze = maze.getMaze();
-
-		System.out.println(tempMaze);
-
 		curFloor = maze.getStartPosition().x;
 		mazeCurFloor = maze.getCrossSectionByZ(curFloor);
-
+	}
+		
+		tempPos=new Position(maze.getStartPosition());
 		character = new Character();
 		character.setPos(maze.getStartPosition());
 
@@ -62,6 +67,7 @@ public class MazeDisplay extends Canvas {
 			@Override
 			public void keyPressed(KeyEvent e) {
 
+				Position pos = character.getPos();//
 				int temp;
 				ArrayList<Position> allPossible = maze.getPossibleMoves(character.getPos());
 				switch (e.keyCode) {
@@ -169,6 +175,13 @@ public class MazeDisplay extends Canvas {
 			@Override
 			public void paintControl(PaintEvent e) {
 
+				Position pos =new Position(maze.getStartPosition());
+				
+				if (maze != null){
+					curFloor = maze.getStartPosition().x;
+				}
+						
+					
 				e.gc.setBackground(new Color(null, 0, 0, 0));
 				e.gc.setForeground(new Color(null, 255, 255, 255));
 
@@ -176,6 +189,10 @@ public class MazeDisplay extends Canvas {
 				int height = getSize().y;
 
 				if (mazeCurFloor != null) {
+					
+					
+					character.setPos(maze.getStartPosition());
+
 
 					goal.setPos(maze.getGoalPosition());
 
@@ -200,18 +217,27 @@ public class MazeDisplay extends Canvas {
 						if (wGoal.getPos() == maze.getGoalPosition()) {
 							wGoal.draw(w, h, e.gc);
 						}
+					
+						System.exit(0);
+
 					}
+				
+
 				}
 
 				e.gc.drawString(
 						"floor: " + curFloor + "  row: " + character.getPos().y + "  col: " + character.getPos().z, 5,
 						5, false);
 			}
-		});// <---------------------------
+		});
 	}
 
-	public void setMazeData(Maze3d md) {
+	public void setMazeData(String name, Maze3d md) {
+		
+		this.mazeName = name;
 		this.maze = md;
+		
+		setMazeCurFloor(maze.getCrossSectionByZ(maze.getStartPosition().x));//new
 	}
 
 	public void mazeDisplay(Composite parent, int style) {
@@ -228,7 +254,7 @@ public class MazeDisplay extends Canvas {
 		ObjectInputStream ois = null;
 		try {
 			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("cuurentMaze")));// cuurentMaze
-			String x = (String) ois.readObject();
+			this.mazeName = (String) ois.readObject();
 			this.maze = (Maze3d) ois.readObject();
 			ois.close();
 		} catch (IOException e1) {
