@@ -367,12 +367,12 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void SetProperties(String[] args) {
 	
-		if (args[1] == "GrowingTree")
+		if (args[0] == "GrowingTree")
 			properties.setMazeGenerator(1);
 		else
 			properties.setMazeGenerator(0);
 
-		if (args[2] == "BFS")
+		if (args[1] == "bfs")
 			properties.setMazeGenerator(1);
 		else
 			properties.setMazeGenerator(0);

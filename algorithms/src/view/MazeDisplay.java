@@ -16,6 +16,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
@@ -42,8 +43,8 @@ public class MazeDisplay extends Canvas {
 
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
-		//
-		loadCurrentMaze();//delete
+		
+		loadCurrentMaze();
 		
 		if(maze!=null){
 			
@@ -216,9 +217,9 @@ public class MazeDisplay extends Canvas {
 
 						if (wGoal.getPos() == maze.getGoalPosition()) {
 							wGoal.draw(w, h, e.gc);
+										
 						}
-					
-						System.exit(0);
+					//	System.exit(0);
 
 					}
 				
