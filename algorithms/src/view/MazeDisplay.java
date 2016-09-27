@@ -44,10 +44,13 @@ public class MazeDisplay extends Canvas {
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
 		
-		loadCurrentMaze();
+		///if(maze==null)
+			//return;
+		loadCurrentMaze();//////////////////////////////
 		
 		if(maze!=null){
 			
+		//loadCurrentMaze();/////////////////////////////////////////////////////////	
 		tempMaze = maze.getMaze();
 		curFloor = maze.getStartPosition().x;
 		mazeCurFloor = maze.getCrossSectionByZ(curFloor);
@@ -129,8 +132,11 @@ public class MazeDisplay extends Canvas {
 					temp = curFloor;
 
 					if (Iscontains(allPossible, new Position(temp + 1, character.getPos().y, character.getPos().z))) {
+						
 						character.moveUp();
-						curFloor++;
+						character.moveUp();
+						curFloor+=2;//++
+						
 						mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
 					}
@@ -146,7 +152,9 @@ public class MazeDisplay extends Canvas {
 					if (Iscontains(allPossible, new Position(temp - 1, character.getPos().y, character.getPos().z))) {
 
 						character.moveDown();
-						curFloor--;
+						character.moveDown();
+
+						curFloor-=2;//--
 						mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
 					}
@@ -176,6 +184,7 @@ public class MazeDisplay extends Canvas {
 			@Override
 			public void paintControl(PaintEvent e) {
 
+				
 				Position pos =new Position(maze.getStartPosition());
 				
 				if (maze != null){
@@ -229,9 +238,12 @@ public class MazeDisplay extends Canvas {
 				e.gc.drawString(
 						"floor: " + curFloor + "  row: " + character.getPos().y + "  col: " + character.getPos().z, 5,
 						5, false);
-			}
+			
+				
+				}
 		});
 	}
+	
 
 	public void setMazeData(String name, Maze3d md) {
 		
@@ -239,6 +251,9 @@ public class MazeDisplay extends Canvas {
 		this.maze = md;
 		
 		setMazeCurFloor(maze.getCrossSectionByZ(maze.getStartPosition().x));//new
+		
+	//	redraw();/////////////////////////////////////////////
+
 	}
 
 	public void mazeDisplay(Composite parent, int style) {
@@ -303,7 +318,9 @@ public class MazeDisplay extends Canvas {
 							int temp;
 							switch (where) {
 							case "down":
+								
 								temp = curFloor;
+								
 								character.moveDown();
 								curFloor--;
 								mazeCurFloor = maze.getCrossSectionByZ(curFloor);

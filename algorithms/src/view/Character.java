@@ -10,7 +10,7 @@ public class Character {
 	private Image img;
 
 	public Character() {
-		img = new Image(null, "images/start.png");
+		img = new Image(null, "images/start.png");//start.png
 	}
 
 	public Position getPos() {

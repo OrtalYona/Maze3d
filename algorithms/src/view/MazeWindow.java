@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -57,6 +58,7 @@ public class MazeWindow extends Observable implements Observer, View {
 		this.in = in;
 		this.out = out;
 		this.pro = pro;
+		//this.maze=null;
 		loadMazes();
 	}
 
@@ -81,13 +83,14 @@ public class MazeWindow extends Observable implements Observer, View {
 		
 		GridLayout grid = new GridLayout(2, false);//false
 		shell.setLayout(grid);
-
+		
 		Composite buttons = new Composite(shell, SWT.NONE);
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		buttons.setLayout(rowLayout);
 		shell.setText("Help Cinderella find her prince");
 
 		mazeDisplay = new MazeDisplay(shell, SWT.BORDER);
+		mazeDisplay.setBackgroundImage(new Image(null, "images/backg.jpg"));
 		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		mazeDisplay.setFocus();
 		
@@ -98,7 +101,7 @@ public class MazeWindow extends Observable implements Observer, View {
 		GenerateMazeWindow win = new GenerateMazeWindow();
 		win.addObserver(this);
 		Button btnGenerateMaze = new Button(buttons, SWT.PUSH);
-		btnGenerateMaze.setText("New maze ");
+		btnGenerateMaze.setText("New maze");
 		
 		btnGenerateMaze.addSelectionListener(new SelectionListener() {
 
@@ -122,6 +125,7 @@ public class MazeWindow extends Observable implements Observer, View {
 	
 		
 		Button btnDisplayMaze = new Button(buttons, SWT.PUSH);
+	//	btnDisplayMaze.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));//add now
 		btnDisplayMaze.setText("Load maze");
 		
 		Button btnStartGame = new Button(buttons, SWT.PUSH);
@@ -131,14 +135,14 @@ public class MazeWindow extends Observable implements Observer, View {
 		Button btnSolveMaze = new Button(buttons, SWT.PUSH);
 		btnSolveMaze.setText("Solve maze");
 
-		
-
-		Button btnHint = new Button(buttons, SWT.PUSH);
-		btnHint.setText("Hint           ");
-
 		Button btnProperties = new Button(buttons, SWT.PUSH);
 		btnProperties.setText("Properties");
 
+		Button btnHint = new Button(buttons, SWT.PUSH);
+		btnHint.setText("Hint");
+		
+		
+		
 		Button btnE = new Button(buttons, SWT.PUSH);
 		btnE.setText("Exit");
 
@@ -170,6 +174,7 @@ public class MazeWindow extends Observable implements Observer, View {
 					mazeDisplay.setMazeData(name, maze);///new
 					mazeDisplay.redraw();
 					mazeDisplay.setFocus();
+				
 			}
 
 			@Override
