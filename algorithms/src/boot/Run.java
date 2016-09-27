@@ -1,10 +1,12 @@
 package boot;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import Properties.Properties;
+import Properties.PropertiesLoader;
 import model.MyModel;
 import presenter.Presenter;
 import view.MazeWindow;
@@ -12,10 +14,26 @@ import view.MazeWindow;
 public class Run {
 
 	public static void main(String[] args) throws Exception {
+		
+		Properties p = new Properties(1,1,50);
+		
+		try {
+			p = PropertiesLoader.getInstance();
+		} catch (FileNotFoundException e2) {
+			System.out.println("Could't find");
+			p = new Properties();
+			try {
+				PropertiesLoader.write(p, "newPro.xml");
+			} catch (Exception e) {
+				System.out.println("Could't save");
+			}
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
-		Properties p = new Properties(1,1,50);
+		//Properties p = new Properties(1,1,50);
 		MyModel m = new MyModel();
 		MazeWindow win = new MazeWindow(in, out, p);
 		Presenter pre = new Presenter(win, m);

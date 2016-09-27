@@ -19,6 +19,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import Properties.Properties;
+import Properties.PropertiesLoader;
 import algorithms.demo.Maze3dSearchableAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
 import algorithms.mazeGenerators.Maze3d;

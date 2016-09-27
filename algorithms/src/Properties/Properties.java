@@ -16,11 +16,7 @@ public class Properties implements Serializable {
 	private int mazeGenerator;
 	private int solveAlgorithm;
 	private int numOfThreads;
-	
 
-
-	//private String generateMazeAlgorithm;
-	//private String solveMazeAlgorithm;
 
 	public enum MazeGenerator {
 		SimpleMaze, GrowingTree
@@ -80,7 +76,7 @@ public class Properties implements Serializable {
 /*
  * try { xmlEncoder=new XMLEncoder(new BufferedOutputStream(new
  * FileOutputStream("test.xml"))); xmlEncoder.flush();
- * xmlEncoder.writeObject(xmlEncoder); //???
+ * xmlEncoder.writeObject(xmlEncoder); //
  * 
  * } catch (FileNotFoundException e) { // TODO Auto-generated catch block
  * e.printStackTrace(); }
