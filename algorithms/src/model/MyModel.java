@@ -374,9 +374,9 @@ public class MyModel extends Observable implements Model {
 			properties.setMazeGenerator(0);
 
 		if (args[1] == "bfs")
-			properties.setMazeGenerator(1);
+			properties.setSolveAlgorithm(1);
 		else
-			properties.setMazeGenerator(0);
+			properties.setSolveAlgorithm(0);
 	}
 
 	@Override

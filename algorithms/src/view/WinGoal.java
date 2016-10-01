@@ -16,7 +16,7 @@ public class WinGoal {
 	private Image img;
 
 	public WinGoal() {
-		img = new Image(null, "images/startC.jpg");
+		img = new Image(null, "images/2.jpg");//startC.jpg
 	}
 
 	public Position getPos() {

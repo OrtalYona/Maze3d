@@ -14,6 +14,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
@@ -30,6 +31,7 @@ import algorithms.search.Solution;
 public class MazeDisplay extends Canvas {
 
 	public Character character;
+	private Stairs stair;
 	private int[][] mazeCurFloor;
 	private Goal goal;
 	private WinGoal wGoal;;
@@ -39,10 +41,12 @@ public class MazeDisplay extends Canvas {
 	int curFloor;
 	String mazeName;
 	Position tempPos;
+	private int[][] FloorN;
+	private int[][] FloorP;
 
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
-		loadCurrentMaze();
+	//	loadCurrentMaze();-----------------------
 
 		if (maze != null) {
 
@@ -51,21 +55,22 @@ public class MazeDisplay extends Canvas {
 			mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 		}
 
-		tempPos = new Position(maze.getStartPosition());
+		//tempPos = new Position(maze.getStartPosition());-------------------------
 		character = new Character();
-		character.setPos(maze.getStartPosition());
+		//character.setPos(maze.getStartPosition());------------------------
 
 		goal = new Goal();
-		goal.setPos(new Position(1, 1, 1));
+	//	goal.setPos(new Position(1, 1, 1));-------------------------
 
 		wGoal = new WinGoal();
-		wGoal.setPos(new Position(1, 1, 1));
+		//wGoal.setPos(new Position(1, 1, 1));-------------------------
+		stair=new Stairs();
 
 		this.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-
+			
 				Position pos = character.getPos();
 				int temp;
 				ArrayList<Position> allPossible = maze.getPossibleMoves(character.getPos());
@@ -179,16 +184,17 @@ public class MazeDisplay extends Canvas {
 			@Override
 			public void paintControl(PaintEvent e) {
 
-				Position pos = new Position(maze.getStartPosition());
+				//Position pos = new Position(maze.getStartPosition());--------------------
 
 				if (maze != null) {
 					curFloor = maze.getStartPosition().x;
-					// nextFloor=maze.getCrossSectionByZ(curFloor+1);////////////1
-					// previosFloor=maze.getCrossSectionByZ(curFloor-1);//////////1
+					 FloorN=maze.getCrossSectionByZ(curFloor+1);////////////1
+					 FloorP=maze.getCrossSectionByZ(curFloor-1);//////////1
 				}
 
-				e.gc.setBackground(new Color(null, 0, 0, 0));
-				e.gc.setForeground(new Color(null, 255, 255, 255));
+				e.gc.setBackground(new Color(null, 123, 180, 242));//251, 153, 187)
+				e.gc.setForeground(new Color(null, 255, 255, 255));// 255, 255, 255));
+			//	e.gc.drawImage(new Image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight);
 
 				int width = getSize().x;
 				int height = getSize().y;
@@ -210,8 +216,14 @@ public class MazeDisplay extends Canvas {
 							int y = i * h;
 							if (mazeCurFloor[i][j] != 0)
 								e.gc.fillRectangle(x, y, w, h);
+						
+					
+					if(FloorP[i][j]==0||FloorN[i][j]==0){
+						Position pos=new Position(curFloor,i,j);
+						stair.setPos(pos);
+						stair.draw(w,h,e.gc);
+					}
 						}
-
 					character.draw(w, h, e.gc);
 
 					if (goal.getPos().x == curFloor) {
@@ -227,9 +239,11 @@ public class MazeDisplay extends Canvas {
 
 				}
 
+				if(maze!=null){//---------------------
 				e.gc.drawString(
 						"floor: " + curFloor + "  row: " + character.getPos().y + "  col: " + character.getPos().z, 5,
 						5, false);
+			}
 
 			}
 		});

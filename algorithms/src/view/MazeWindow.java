@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -83,29 +84,33 @@ public class MazeWindow extends Observable implements Observer, View {
 		GridLayout grid = new GridLayout(2, false);
 		shell.setLayout(grid);
 
-		Composite buttons = new Composite(shell, SWT.NONE);
-		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
+		Composite buttons = new Composite(shell, SWT.FILL);//NONE.FILL
+		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);//SWT.VERTICAL|
 		buttons.setLayout(rowLayout);
 		shell.setText("Help Cinderella find her prince");
 
 		mazeDisplay = new MazeDisplay(shell, SWT.BORDER);
-		mazeDisplay.setBackgroundImage(new Image(null, "images/backg.jpg"));
-		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		mazeDisplay.setBackgroundImage(new Image(null, "images/Back.jpg"));
+		
+		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,1,8));
 		mazeDisplay.setFocus();
 
 		/**
 		 * Generate_3d_maze
 		 */
+		
 		GenerateMazeWindow win = new GenerateMazeWindow();
 		win.addObserver(this);
-		Button btnGenerateMaze = new Button(buttons, SWT.PUSH);
-		btnGenerateMaze.setText("New maze");
+		Button btnGenerateMaze = new Button(shell, SWT.PUSH);//----------------buttonsPUSH
+		btnGenerateMaze.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
+		btnGenerateMaze.setText("New Maze");
 
 		btnGenerateMaze.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				win.start(display);
+				//saveMazes();//////////////////
 				setChanged();
 			}
 
@@ -115,22 +120,28 @@ public class MazeWindow extends Observable implements Observer, View {
 			}
 		});
 
-		Button btnDisplayMaze = new Button(buttons, SWT.PUSH);
-		btnDisplayMaze.setText("Load maze");
+		Button btnDisplayMaze = new Button(shell, SWT.PUSH);//buttons
+		btnDisplayMaze.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
+		btnDisplayMaze.setText("Load Maze");
 
-		Button btnStartGame = new Button(buttons, SWT.PUSH);
+		Button btnStartGame = new Button(shell, SWT.PUSH);//buttons
+		btnStartGame.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
 		btnStartGame.setText("Start Game");
 
-		Button btnSolveMaze = new Button(buttons, SWT.PUSH);
-		btnSolveMaze.setText("Solve maze");
+		Button btnSolveMaze = new Button(shell, SWT.PUSH);//buttons
+		btnSolveMaze.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
+		btnSolveMaze.setText("Solve Maze");
 
-		Button btnProperties = new Button(buttons, SWT.PUSH);
+		Button btnProperties = new Button(shell, SWT.PUSH);//buttons
+		btnProperties.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
 		btnProperties.setText("Properties");
 
-		Button btnHint = new Button(buttons, SWT.PUSH);
+		Button btnHint = new Button(shell, SWT.PUSH);//buttons
+		btnHint.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
 		btnHint.setText("Hint");
 
-		Button btnE = new Button(buttons, SWT.PUSH);
+		Button btnE = new Button(shell, SWT.PUSH);//buttons
+		btnE.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false,1,1));//-------------------
 		btnE.setText("Exit");
 
 		MazeDisplayWindows mdw = new MazeDisplayWindows(mazeName);
@@ -155,6 +166,8 @@ public class MazeWindow extends Observable implements Observer, View {
 			public void widgetSelected(SelectionEvent arg0) {
 
 				loadCurrentMaze();
+				mazeDisplay.setBackgroundImage(new Image(null, "images/white.png"));//backg.jpg"
+			//	mazeDisplay.setForeground(new Color(null, 255,255,255));
 				mazeDisplay.setMazeData(name, maze);/// new
 				mazeDisplay.redraw();
 				mazeDisplay.setFocus();
