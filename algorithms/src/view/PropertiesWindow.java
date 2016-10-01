@@ -59,7 +59,15 @@ public class PropertiesWindow extends Observable {
 		s1.setText("BFS");
 		Button s2 = new Button(lblsearch, SWT.RADIO);
 		s2.setText("DFS");
-
+		
+		Group lblE = new Group(shell, SWT.PUSH);
+		lblE.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+		lblE.setText("Choose:");
+		lblE.setLayout(new GridLayout(2, true));
+		Button btnGUI=new Button(lblE, SWT.RADIO);
+		btnGUI.setText("GUI");
+		Button btnCLI=new Button(lblE, SWT.RADIO);
+		btnCLI.setText("CLI");
 		Button btnP = new Button(shell, SWT.PUSH);
 		btnP.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
 		btnP.setText("Save Properties");

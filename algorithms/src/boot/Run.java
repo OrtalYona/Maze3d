@@ -15,7 +15,7 @@ public class Run {
 
 	public static void main(String[] args) throws Exception {
 		
-		Properties p = new Properties(1,1,50);
+		Properties p=null;
 		
 		try {
 			p = PropertiesLoader.getInstance();
@@ -34,7 +34,7 @@ public class Run {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
 		//Properties p = new Properties(1,1,50);
-		MyModel m = new MyModel();
+		MyModel m = new MyModel(p);
 		MazeWindow win = new MazeWindow(in, out, p);
 		Presenter pre = new Presenter(win, m);
 		win.addObserver(pre);

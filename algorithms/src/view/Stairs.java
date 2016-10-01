@@ -12,7 +12,7 @@ public class Stairs {
 		private Image img;
 
 		public Stairs() {
-			img = new Image(null, "images/m1.jpg");//startC.jpg
+			img = new Image(null, "images/m1.jpg");
 		}
 
 		public Position getPos() {

@@ -19,7 +19,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import Properties.Properties;
-import Properties.PropertiesLoader;
 import algorithms.demo.Maze3dSearchableAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
 import algorithms.mazeGenerators.Maze3d;
@@ -40,15 +39,12 @@ public class MyModel extends Observable implements Model {
 	private Map<String, Solution<Position>> solutions = new HashMap<String, Solution<Position>>();
 	public ArrayList<String> mazesNames = new ArrayList<>();
 	private HashMap<Maze3d, Solution<Position>> mazeSolution = new HashMap<Maze3d, Solution<Position>>();
-	private final String file = "newFile.zip"; // "newFileM.zip";
-	// private final String fileNames ="FileNames.zip";
+	private final String file = "newFile.zip";
 	private Properties properties;
 	String str;
 
-	public MyModel() {
-		// properties = PropertiesLoader.getInstance().getProperties();
-		// executor =
-		// Executors.newFixedThreadPool(properties.getNumOfThreads());
+	public MyModel(Properties p) {
+		this.properties = p;
 		executor = Executors.newFixedThreadPool(50);
 	}
 
@@ -146,70 +142,67 @@ public class MyModel extends Observable implements Model {
 	}
 
 	@Override
-	public void solve(String name, String algorithms,String pos) {
+	public void solve(String name, String algorithms, String pos) {
 
 		Maze3d maze = mazes.get(name);
 
-		//Maze3d newMaze = mazes.get(name);
-		boolean changed=false;
+		boolean changed = false;
 		if (pos != "same") {
-			Maze3d temp2 =mazes.get(name);
+			Maze3d temp2 = mazes.get(name);
 			String[] p = pos.split("_");
-			temp2.setStartPosition(new Position(Integer.parseInt(p[0]), Integer.parseInt(p[1]), Integer.parseInt(p[2])));
+			temp2.setStartPosition(
+					new Position(Integer.parseInt(p[0]), Integer.parseInt(p[1]), Integer.parseInt(p[2])));
 			maze = temp2;
-			changed=true;
-		} 
-		
-		//Maze3d maze = mazes.get(name);
-		
-		if(maze!=null){
-			
-		
-		Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
+			changed = true;
+		}
 
-		if (!mazeSolution.containsKey(maze)) {
+		if (maze != null) {
 
-			if (algorithms.toLowerCase().equals("bfs")) {
+			Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
+
+			if (!mazeSolution.containsKey(maze)) {
+
+				if (algorithms.toLowerCase().equals("bfs")) {
+
+					// executor.submit(new Callable<Solution<Position>>() {
+
+					// @Override
+					// public Solution<Position> call() throws Exception {
+
+					BFS<Position> bfs = new BFS<Position>();
+					// Solution<Position> solution1 = bfs.search(adapter);
+					Solution<Position> solution = bfs.search(adapter);
+					mazes.put(name, maze);
+					solutions.put(name, solution);// solution1
+					// mazeSolution.put(maze, solution);
+					// return solution;
+				}
+
+				// });
+			}
+
+			else if (algorithms.toLowerCase().equals("dfs")) {
 
 				// executor.submit(new Callable<Solution<Position>>() {
 
 				// @Override
 				// public Solution<Position> call() throws Exception {
-
-				BFS<Position> bfs = new BFS<Position>();
-				// Solution<Position> solution1 = bfs.search(adapter);
-				Solution<Position> solution = bfs.search(adapter);
+				DFS<Position> dfs = new DFS<Position>();
+				// Solution<Position> solution2 = dfs.search(adapter);
+				Solution<Position> solution = dfs.search(adapter);
 				mazes.put(name, maze);
-				solutions.put(name, solution);// solution1
+				solutions.put(name, solution);// 2
 				// mazeSolution.put(maze, solution);
 				// return solution;
+				// }
+
+				// });
+				// }
 			}
 
-			// });
-		}
-
-		else if (algorithms.toLowerCase().equals("dfs")) {
-
-			// executor.submit(new Callable<Solution<Position>>() {
-
-			// @Override
-			// public Solution<Position> call() throws Exception {
-			DFS<Position> dfs = new DFS<Position>();
-			// Solution<Position> solution2 = dfs.search(adapter);
-			Solution<Position> solution = dfs.search(adapter);
-			mazes.put(name, maze);
-			solutions.put(name, solution);// 2
-			// mazeSolution.put(maze, solution);
-			// return solution;
-			// }
-
-			// });
-			// }
-		}
-
-		saveCurrentSolution(name);
-		setChanged();
-		notifyObservers("solve_ready " + name);
+			saveCurrentSolution(name);
+			setChanged();
+			notifyObservers("solve_ready " + name);
 		}
 	}
 
@@ -367,16 +360,21 @@ public class MyModel extends Observable implements Model {
 
 	@Override
 	public void SetProperties(String[] args) {
-	
-		if (args[0] == "GrowingTree")
-			properties.setMazeGenerator(1);
-		else
-			properties.setMazeGenerator(0);
 
-		if (args[1] == "bfs")
+		if (args[0] == "GrowingTree") {
+			properties.setMazeGenerator(1);
+		}
+
+		else if (args[0] == "Simple") {
+			properties.setMazeGenerator(0);
+		}
+
+		if (args[1] == "bfs") {
+
 			properties.setSolveAlgorithm(1);
-		else
+		} else if (args[1] == "dfs") {
 			properties.setSolveAlgorithm(0);
+		}
 	}
 
 	@Override
@@ -416,7 +414,7 @@ public class MyModel extends Observable implements Model {
 	public void saveCurrentMaze(String name) {
 		ObjectOutputStream oos = null;
 		try {
-			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("cuurentMaze")));//cuurentMaze
+			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("cuurentMaze")));// cuurentMaze
 			oos.writeObject(name);
 			oos.writeObject(this.mazes.get(name));
 			oos.close();
@@ -434,6 +432,5 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e1) {
 		}
 	}
-
 
 }
