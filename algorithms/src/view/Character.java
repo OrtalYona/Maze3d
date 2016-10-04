@@ -5,6 +5,11 @@ import org.eclipse.swt.graphics.Image;
 
 import algorithms.mazeGenerators.Position;
 
+/**
+ * Class Character
+ * @author Ortal Yona
+ *
+ */
 public class Character {
 	private Position pos;
 	private Image img;
@@ -21,6 +26,12 @@ public class Character {
 		this.pos = pos;
 	}
 
+	/**
+	 * Draw
+	 * @param cellWidth
+	 * @param cellHeight
+	 * @param gc
+	 */
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, cellWidth * pos.z, cellHeight * pos.y,
 				cellWidth, cellHeight);

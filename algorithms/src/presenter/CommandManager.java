@@ -6,7 +6,11 @@ import java.util.HashMap;
 import algorithms.mazeGenerators.Maze3d;
 import model.Model;
 import view.View;
-
+/**
+ * Class Command Manager
+ * @author Ortal Yona
+ *
+ */
 public class CommandManager {
 
 	private Model model;

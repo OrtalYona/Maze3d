@@ -4,9 +4,8 @@ package view;
 
 	import algorithms.mazeGenerators.Position;
 
+	
 public class Stairs {
-
-
 
 		private Position pos;
 		private Image img;

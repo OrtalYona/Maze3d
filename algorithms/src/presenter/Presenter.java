@@ -8,7 +8,7 @@ import model.Model;
 import view.View;
 
 /**
- * interface Presenter
+ * 	Class Presenter
  * 
  * @author Ortal Yona
  *

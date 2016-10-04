@@ -71,6 +71,9 @@ public class MazeDisplay extends Canvas {
 			
 				Position pos = character.getPos();
 				int temp;
+				/**
+				 * all Possible moves
+				 */
 				ArrayList<Position> allPossible = maze.getPossibleMoves(character.getPos());
 				switch (e.keyCode) {
 
@@ -292,6 +295,10 @@ public class MazeDisplay extends Canvas {
 		this.sol = t;
 	}
 
+	/**
+	 * move to the goal
+	 * @param num
+	 */
 	void goToTheGoal(int num) {
 
 		int k = 0;
