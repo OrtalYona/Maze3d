@@ -136,7 +136,6 @@ public class CLI extends Observable {
 		});
 		thread.run();
 		thread.join();
-		// thread.start();
 	}
 
 }

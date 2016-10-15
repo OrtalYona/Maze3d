@@ -59,32 +59,12 @@ public class MyModel extends Observable implements Model {
 
 			@Override
 			public Maze3d call() throws Exception {
-				
-			/*	Maze3d myMaze=(Maze3d)queryServer("127.0.0.1",8090,"generate maze",name+","+floor+","+rows+","+cols,"GrowingTree");
-				if(myMaze==null)
-				{
-					constantArgs[0] = "disconnect";
-					constantArgs[1] = name;
-					setChanged();
-					notifyObservers(constantArgs);
-					//return;
-				}
-				//this.myMaze = myMaze;
 
-				constantArgs[0] ="generate maze";
-				constantArgs[1] = name;
-				setChanged();
-				notifyObservers(constantArgs);*/
-				
-				
-				/////////////////////////////////////////////////////////////
-				
-				GrowingTreeGenerator generator = new GrowingTreeGenerator();//<<<<<<<<<<<<<<<<<<<<<<<<<
-				Maze3d maze = generator.generate(floor, rows, cols);//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-				
-				
-				mazes.put(name, maze);// String,Maze3d
-				mazesNames.add(name);// String
+				Maze3d maze = (Maze3d) queryServer("127.0.0.1", 8090, "generate maze",
+						name + "," + floor + "," + rows + "," + cols, "GrowingTree");
+
+				mazes.put(name, maze);
+				mazesNames.add(name);
 				saveMazes();
 				saveSolutions();
 				sendMazesNames(name);
@@ -172,6 +152,19 @@ public class MyModel extends Observable implements Model {
 
 		Maze3d maze = mazes.get(name);
 
+		@SuppressWarnings("unchecked")
+		Solution<Position> sol = (Solution<Position>) queryServer("127.0.0.1", 8090, "solve maze", name, algorithms);
+
+		if (sol == null) {
+			return;
+		}
+
+		System.out.println(sol);
+
+		mazes.put(name, maze);
+		solutions.put(name, sol);
+		saveCurrentSolution(name);
+
 		boolean changed = false;
 		if (pos != "same") {
 			Maze3d temp2 = mazes.get(name);
@@ -180,55 +173,55 @@ public class MyModel extends Observable implements Model {
 					new Position(Integer.parseInt(p[0]), Integer.parseInt(p[1]), Integer.parseInt(p[2])));
 			maze = temp2;
 			changed = true;
-		}
 
-		if (maze != null) {
+			if (maze != null) {
 
-			Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
+				Maze3dSearchableAdapter adapter = new Maze3dSearchableAdapter(maze);
 
-			if (!mazeSolution.containsKey(maze)) {
+				if (!mazeSolution.containsKey(maze)) {
 
-				if (algorithms.toLowerCase().equals("bfs")) {
+					if (algorithms.toLowerCase().equals("bfs")) {
+
+						// executor.submit(new Callable<Solution<Position>>() {
+
+						// @Override
+						// public Solution<Position> call() throws Exception {
+
+						BFS<Position> bfs = new BFS<Position>();
+						// Solution<Position> solution1 = bfs.search(adapter);
+						Solution<Position> solution = bfs.search(adapter);
+						mazes.put(name, maze);
+						solutions.put(name, solution);// solution1
+						// mazeSolution.put(maze, solution);
+						// return solution;
+					}
+
+					// });
+				}
+
+				else if (algorithms.toLowerCase().equals("dfs")) {
 
 					// executor.submit(new Callable<Solution<Position>>() {
 
 					// @Override
 					// public Solution<Position> call() throws Exception {
-
-					BFS<Position> bfs = new BFS<Position>();
-					// Solution<Position> solution1 = bfs.search(adapter);
-					Solution<Position> solution = bfs.search(adapter);
+					DFS<Position> dfs = new DFS<Position>();
+					// Solution<Position> solution2 = dfs.search(adapter);
+					Solution<Position> solution = dfs.search(adapter);
 					mazes.put(name, maze);
-					solutions.put(name, solution);// solution1
+					solutions.put(name, solution);
 					// mazeSolution.put(maze, solution);
 					// return solution;
+					// }
+
+					// });
+					// }
 				}
+				saveCurrentSolution(name);
+				setChanged();
+				notifyObservers("solve_ready " + name);
 
-				// });
 			}
-
-			else if (algorithms.toLowerCase().equals("dfs")) {
-
-				// executor.submit(new Callable<Solution<Position>>() {
-
-				// @Override
-				// public Solution<Position> call() throws Exception {
-				DFS<Position> dfs = new DFS<Position>();
-				// Solution<Position> solution2 = dfs.search(adapter);
-				Solution<Position> solution = dfs.search(adapter);
-				mazes.put(name, maze);
-				solutions.put(name, solution);// 2
-				// mazeSolution.put(maze, solution);
-				// return solution;
-				// }
-
-				// });
-				// }
-			}
-
-			saveCurrentSolution(name);
-			setChanged();
-			notifyObservers("solve_ready " + name);
 		}
 	}
 
@@ -458,38 +451,29 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e1) {
 		}
 	}
-	
-	
-	//////////////////////////////////
-	
-	
-	
-	
-	private Object queryServer(String serverIP,int serverPort,String command,String data,String property){
-		Object result=null;
-		Socket server;			
+
+	private Object queryServer(String serverIP, int serverPort, String command, String data, String property) {
+		Object result = null;
+		Socket server = null;
+		
 		try {
 			System.out.println("Trying to connect server, IP: " + serverIP + " " + serverPort);
-			server = new Socket(serverIP,serverPort);
-			PrintWriter writerToServer=new PrintWriter((new OutputStreamWriter(server.getOutputStream())));
+			server = new Socket("127.0.0.1", 8090);// (serverIP,serverPort);
+			PrintWriter writerToServer = new PrintWriter((new OutputStreamWriter(server.getOutputStream())));
 			writerToServer.println(command);
 			writerToServer.flush();
 			writerToServer.println(property);
 			writerToServer.flush();
 			writerToServer.println(data);
 			writerToServer.flush();
-			ObjectInputStream inputDecompressed;
+			ObjectInputStream inputDecompressed = null;
 			inputDecompressed = new ObjectInputStream(server.getInputStream());
-			result=inputDecompressed.readObject();
-			if(result.toString().contains("disconnect"))
-			{
-				setChanged();
-				notifyObservers("disconnect");
-			}
+			result = inputDecompressed.readObject();
 			writerToServer.close();
 			inputDecompressed.close();
 			server.close();
-		} catch (ClassNotFoundException | IOException  e) {
+			
+		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 
 		}
@@ -497,6 +481,5 @@ public class MyModel extends Observable implements Model {
 		return result;
 
 	}
-	
 
 }

@@ -175,7 +175,7 @@ public class CommandManager {
 				String algorithm = args[1];
 
 				try {
-					model.solve(name, algorithm,"same");//args[2]
+					model.solve(name, algorithm,"same");
 
 				} catch (ArrayIndexOutOfBoundsException e) {
 					model.solve(name, algorithm,args[2]);

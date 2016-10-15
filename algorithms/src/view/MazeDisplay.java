@@ -47,7 +47,6 @@ public class MazeDisplay extends Canvas {
 
 	public MazeDisplay(Composite parent, int style) {
 		super(parent, style);
-	//	loadCurrentMaze();-----------------------
 
 		if (maze != null) {
 
@@ -136,7 +135,7 @@ public class MazeDisplay extends Canvas {
 
 						character.moveUp();
 						character.moveUp();
-						curFloor += 2;// ++
+						curFloor += 2;
 
 						mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
@@ -155,7 +154,7 @@ public class MazeDisplay extends Canvas {
 						character.moveDown();
 						character.moveDown();
 
-						curFloor -= 2;// --
+						curFloor -= 2;
 						mazeCurFloor = maze.getCrossSectionByZ(curFloor);
 
 					}
@@ -192,7 +191,7 @@ public class MazeDisplay extends Canvas {
 					 FloorP=maze.getCrossSectionByZ(curFloor-1);
 				}
 
-				e.gc.setBackground(new Color(null, 123, 180, 242));//251, 153, 187)
+				e.gc.setBackground(new Color(null, 123, 180, 242));
 				e.gc.setForeground(new Color(null, 255, 255, 255));
 
 				int width = getSize().x;
@@ -231,15 +230,8 @@ public class MazeDisplay extends Canvas {
 					
 						if (wGoal.getPos() == maze.getGoalPosition()) {
 							wGoal.draw(w, h, e.gc);
-								
-//							MessageBox msg = new MessageBox(getShell(), SWT.OK);
-//							msg.setMessage("YOU WIN!!!");
-//							msg.open();
-
 
 						}
-						// System.exit(0);
-
 					}
 
 				}

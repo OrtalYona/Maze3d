@@ -4,13 +4,10 @@ import java.io.Serializable;
 
 /**
  * class properties
- * 
- * @author
  *
  */
 public class Properties implements Serializable {
 
-	/***/
 	private static final long serialVersionUID = 1L;
 	
 	private int mazeGenerator;
@@ -71,15 +68,3 @@ public class Properties implements Serializable {
 	}
 
 }
-
-// XMLEncoder xmlEncoder;
-/*
- * try { xmlEncoder=new XMLEncoder(new BufferedOutputStream(new
- * FileOutputStream("test.xml"))); xmlEncoder.flush();
- * xmlEncoder.writeObject(xmlEncoder); //
- * 
- * } catch (FileNotFoundException e) { // TODO Auto-generated catch block
- * e.printStackTrace(); }
- * 
- * finally{ xmlEncoder.close(); }
- */

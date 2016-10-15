@@ -6,8 +6,6 @@ import algorithms.mazeGenerators.Position;
 
 /**
  * Goal image and position
- * 
- * @author
  *
  */
 public class WinGoal {

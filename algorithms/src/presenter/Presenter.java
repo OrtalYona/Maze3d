@@ -13,6 +13,10 @@ import view.View;
  * @author Ortal Yona
  *
  */
+
+
+
+
 public class Presenter implements Observer {
 
 	private Model model;
